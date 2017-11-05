@@ -4,5 +4,8 @@
 
  
 
-```javascript
-“The whole secret of existence is to have no fear. Never fear what will become of you, depend on no one. Only the moment you reject all help are you freed.”
+```text
+“The whole secret of existence is to have no fear. 
+Never fear what will become of you, 
+depend on no one. Only the moment you reject all help are you freed.”
+```
