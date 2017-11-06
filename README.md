@@ -1,6 +1,6 @@
 ## DigPrix
 
-<p align="center"><img src="https://image.ibb.co/mrMK7b/Dig_Prix_Square_Logo_Copy.jpg"></p>
+<p align="center"><img src="https://image.ibb.co/gvN7Aw/Dig_Prix_Github_Logo.png"></p>
 
  
 
