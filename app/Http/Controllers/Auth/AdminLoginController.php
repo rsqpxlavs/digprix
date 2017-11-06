@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Auth;
 use App\Admin;
+use JavaScript;
 
 class AdminLoginController extends Controller
 {
@@ -19,6 +20,10 @@ class AdminLoginController extends Controller
 
     public function showLoginForm()
     {
+        JavaScript::put([
+            'foo' => 'bar',
+        ]);
+        
         return view('auth.admin-login');
     }
 

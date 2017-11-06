@@ -11,4 +11,4 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/assets/js/app.js', 'public/assets/frontend/js');
+mix.react('resources/assets/backend/js/react/login/LoginMain.js', 'public/assets/backend/js/custom');
