@@ -21,7 +21,8 @@ class AdminLoginController extends Controller
     public function showLoginForm()
     {
         JavaScript::put([
-            'foo' => 'bar',
+            '_resetURI' => route('admin.password.request'),
+            '_loginHIT' => route('admin.login.submit'),
         ]);
         
         return view('auth.admin-login');
@@ -57,12 +58,28 @@ class AdminLoginController extends Controller
         // Attempt to log the user in
 
         //check the username field input type [username or email or mobile]
-        $field_type = Admin::where('email', $request->username)->count() > 0 ? 'email' : 
-                      Admin::where('username', $request->username)->count() > 0 ? 'username' : 'mobile';
+        if(Admin::where('email', $request->username)->count() > 0)
+        {
+            $field_type = 'email';
+        }
+        else if(Admin::where('username', $request->username)->count() > 0)
+        {
+            $field_type = 'username';
+        }
+        else
+        {
+            $field_type = 'mobile';
+        }
 
         if (Auth::guard('admin')->attempt([$field_type => $request->username, 'password' => $request->password, 'active' => 1], $request->remember)) {
             // if successful, then redirect to their intended location
-            return redirect()->intended(route('admin.dashboard'));
+
+            //here returning the uri to redirect as it is being processed by ajax
+            return response()->json([
+                'authenticated' => true, 
+                'intended' => route('admin.dashboard'), 
+                'firstname' => Admin::where($field_type, $request->username)->first()->fname
+            ]);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -71,7 +88,8 @@ class AdminLoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         // if unsuccessful, then redirect back to the login with the form data
-        return redirect()->back()->withInput($request->only('email', 'remember'))->with('authenticationError', 'Incorrect Credentials');
+        //return redirect()->back()->withInput($request->only('email', 'remember'))->with('authenticationError', 'Incorrect Credentials');
+        return response()->json(['authenticated' => false]);
     }
 
     public function logout()
