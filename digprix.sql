@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2017 at 06:58 AM
+-- Generation Time: Nov 07, 2017 at 07:03 AM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.6
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admins` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -47,8 +48,8 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `name`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', NULL, 'srv.nxr@gmail.com', 'sourav', '121212', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'JPIdQ5uf9YoxPyGRQaSg0ahqJBsf4WiIC3wvmGnFB2EQmn6IQ5bkMsM05nOk', 1, 1, '2017-10-17 09:49:29', '2017-10-17 09:49:29');
+INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `active`, `created_at`, `updated_at`) VALUES
+(1, 'Sourav', NULL, NULL, 'srv.nxr@gmail.com', 'sourav', '121212', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'fXRQBzqocT2EhnBu0a91q8yQgZDv1MqCO9c5fyZQiWyYbOKID4dFwTBNRRrP', 1, 1, '2017-10-17 09:49:29', '2017-10-17 09:49:29');
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2017_10_13_064741_create_failed_jobs_table', 2),
 (5, '2017_10_17_083944_create_admins_table', 3),
 (6, '2017_10_17_095244_create_admin_password_resets_table', 4),
-(7, '2017_10_24_141511_admins_table_add_mobile_col', 5);
+(7, '2017_10_24_141511_admins_table_add_mobile_col', 5),
+(8, '2017_11_06_192932_admins_table_break_name_col_to_fname_lname', 6);
 
 -- --------------------------------------------------------
 
@@ -158,7 +160,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'grZhLF9VLZKprDiLkGdqvBO1LXTam7IOwiihzQyHzO7ziUM9nEBp9X11nkLt', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
+(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'af62dcEipJQXUWW3JK0EZDvFkyOVZjWOXBKxWsc62laGLFR8lk21Kc8OWOSI', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
 
 --
 -- Indexes for dumped tables
@@ -233,7 +235,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `users`
 --
