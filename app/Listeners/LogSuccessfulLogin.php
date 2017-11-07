@@ -29,13 +29,20 @@ class LogSuccessfulLogin
     {
         if(isset($user->user))
         {
-            //User type user logged in
-            Log::info('User logged in ->'. $user->user->email);
-        }
-        else if(isset($user->admin))
-        {
-            //Admin type user logged in
-            Log::info('Admin logged in ->'. $user->admin->email);
+            //detect which type of user [admin/user] logged in
+            switch (get_class($user->user)) 
+            {
+                case "App\Admin":
+                    Log::info('Admin loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
+                    break;
+                case "App\User":
+                    Log::info('User loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
+                    break;
+                default:
+                    Log::info('New login with undetected user type- Email: ->'. $user->user->email .', ID -> '. $user->user->id);
+            }
+
+            return true;
         }
 
         return false;
