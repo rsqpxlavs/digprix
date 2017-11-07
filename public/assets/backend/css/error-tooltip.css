@@ -1,0 +1,31 @@
+.errtip {
+    font-weight: 700;
+    font-size: 85%;
+    color: #fff;
+    background: #ff4242;
+    border-radius: 4px;
+    /*top: -12px;*/
+    bottom: -30px;
+    min-width: 30px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 999;
+}
+.errtip.right {
+    right: 0;
+}
+.errtip.right span.arrow{right: 10px;}
+.errtip .arrow {
+    position: absolute;
+    display: block;
+    /*bottom: -10px;*/
+    top: -10px;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    /*border-top: 5px solid #ff4242;*/
+    border-bottom: 5px solid #ff4242;
+}
+.errtip .text {
+    white-space: nowrap;
+}

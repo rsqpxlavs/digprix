@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,7 @@
 
 
 var bind = __webpack_require__(11);
-var isBuffer = __webpack_require__(38);
+var isBuffer = __webpack_require__(40);
 
 /*global toString:true*/
 
@@ -713,7 +713,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(41);
+var normalizeHeaderName = __webpack_require__(43);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -803,7 +803,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(40)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
 
 /***/ }),
 /* 7 */
@@ -815,7 +815,7 @@ module.exports = defaults;
 if (false) {
   module.exports = require('./cjs/react.production.min.js');
 } else {
-  module.exports = __webpack_require__(18);
+  module.exports = __webpack_require__(20);
 }
 
 
@@ -926,12 +926,12 @@ module.exports = function bind(fn, thisArg) {
 
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(42);
-var buildURL = __webpack_require__(44);
-var parseHeaders = __webpack_require__(45);
-var isURLSameOrigin = __webpack_require__(46);
+var settle = __webpack_require__(44);
+var buildURL = __webpack_require__(46);
+var parseHeaders = __webpack_require__(47);
+var isURLSameOrigin = __webpack_require__(48);
 var createError = __webpack_require__(13);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(47);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(49);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -1029,7 +1029,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(48);
+      var cookies = __webpack_require__(50);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1113,7 +1113,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(43);
+var enhanceError = __webpack_require__(45);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1171,28 +1171,473 @@ module.exports = Cancel;
 
 /***/ }),
 /* 16 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__(17);
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
 
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(61);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(19);
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nprogress__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nprogress__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nprogress___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nprogress__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__public_assets_backend_lib_nprogress_nprogress_css__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__public_assets_backend_lib_nprogress_nprogress_css__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__public_assets_backend_lib_nprogress_nprogress_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__public_assets_backend_lib_nprogress_nprogress_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__public_assets_backend_css_error_tooltip_css__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__public_assets_backend_css_error_tooltip_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__public_assets_backend_css_error_tooltip_css__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1208,6 +1653,68 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+/**
+*error message alert component
+*/
+function ErrorAlert(props) {
+    var renderable = props.isError ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'alert alert-danger', role: 'alert' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-warning faa-flash animated' }),
+            ' Oh snap!'
+        ),
+        ' incorrect credentials'
+    ) : null;
+    return renderable;
+}
+
+/**
+*valodation tooltip error component
+*/
+function ErrorTip(props) {
+    var renderable = props.invalid ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'errtip right' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'arrow' }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'span',
+            { className: 'text' },
+            props.msg
+        )
+    ) : null;
+    return renderable;
+}
+
+/**
+*tiny welcome back component
+*/
+function WelcomeBack(props) {
+    var renderable = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'span',
+        { className: 'splash-description text-center mt-5 mb-5' },
+        props.loggedIn === true ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            null,
+            'Welcome Back ',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                { className: 'text-info' },
+                props.firstName
+            )
+        ) : 'Login to your account'
+    );
+
+    return renderable;
+}
+
+/**
+*Main form component for backend login
+*/
+
 var LoginMain = function (_Component) {
     _inherits(LoginMain, _Component);
 
@@ -1218,18 +1725,86 @@ var LoginMain = function (_Component) {
 
         _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
         _this.handleRememberChange = _this.handleRememberChange.bind(_this);
-        _this.state = { remember: true };
+        _this.handleFormChange = _this.handleFormChange.bind(_this);
+        _this.state = {
+            user: '',
+            password: '',
+            remember: true,
+            loggedin: false,
+            loggedInUser: '',
+            error: false,
+            usererr: false,
+            validationErrUsername: '',
+            passworderr: false,
+            validationErrPasswd: ''
+        };
         return _this;
     }
 
     _createClass(LoginMain, [{
+        key: 'validateFields',
+        value: function validateFields() {
+            if (this.state.user === '') {
+                return { error: true, fld: { point: 'usererr', placeholder: 'validationErrUsername' }, msg: 'enter username' };
+            } else if (this.state.user.length < 5) {
+                return { error: true, fld: { point: 'usererr', placeholder: 'validationErrUsername' }, msg: 'username too small' };
+            } else if (this.state.password === '') {
+                return { error: true, fld: { point: 'passworderr', placeholder: 'validationErrPasswd' }, msg: 'password left empty' };
+            } else if (this.state.password.length < 6) {
+                return { error: true, fld: { point: 'passworderr', placeholder: 'validationErrPasswd' }, msg: 'too small password' };
+            }
+
+            return { error: false };
+        }
+    }, {
         key: 'handleFormSubmit',
         value: function handleFormSubmit(e) {
+            var _setState;
+
             e.preventDefault();
-            __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.set(0.4);
-            __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.inc();
-            console.log(trans.foo);
-            __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.done();
+            this.setState({ error: false });
+
+            var validate = this.validateFields();
+            if (validate.error === false) {
+                //disable the submit button
+                this.submitBtn.setAttribute("disabled", "disabled");
+
+                //nprogress start
+                __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.set(0.4);
+                __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.inc();
+
+                var scopeThis = this;
+
+                //hit the server
+                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('' + trans._loginHIT, {
+                    username: scopeThis.state.user,
+                    password: scopeThis.state.password,
+                    remember: scopeThis.state.remember
+                }).then(function (response) {
+                    __WEBPACK_IMPORTED_MODULE_3_nprogress___default.a.done();
+
+                    if (response.data.authenticated === true) {
+                        scopeThis.setState({ loggedin: true, loggedInUser: response.data.firstname });
+
+                        location.assign(response.data.intended);
+                        return;
+                    }
+
+                    scopeThis.setState({ error: true, password: '' });
+                    scopeThis.submitBtn.removeAttribute("disabled");
+                }).catch(function (error) {
+                    return console.log(error);
+                });
+
+                return;
+            }
+
+            var ErrorField = validate.fld;
+            var ErrorMsg = validate.msg;
+
+            this.setState((_setState = {}, _defineProperty(_setState, ErrorField.point, true), _defineProperty(_setState, ErrorField.placeholder, ErrorMsg), _setState));
+
+            return;
         }
     }, {
         key: 'handleRememberChange',
@@ -1239,73 +1814,97 @@ var LoginMain = function (_Component) {
             });
         }
     }, {
+        key: 'handleFormChange',
+        value: function handleFormChange(e) {
+            var fieldType = e.target.type;
+            if (fieldType === 'text') {
+                this.setState({ user: e.target.value.trim(), usererr: false, validationErrUsername: '' });
+            } else if (fieldType === 'password') {
+                this.setState({ password: e.target.value, passworderr: false, validationErrPasswd: '' });
+            }
+
+            return;
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'form',
-                { onSubmit: this.handleFormSubmit },
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(WelcomeBack, { loggedIn: this.state.loggedin, firstName: this.state.loggedInUser }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ErrorAlert, { isError: this.state.error }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group' },
+                    'form',
+                    { onSubmit: this.handleFormSubmit },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'input-group' },
+                        { className: 'form-group' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon s7-user' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'username', type: 'text', name: 'username', placeholder: 'Username/Email/Mobile', autoComplete: 'off', autoFocus: true, className: 'form-control' })
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'input-group' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon s7-lock' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'password', type: 'password', name: 'password', placeholder: 'Password', className: 'form-control' })
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group login-submit' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'button',
-                        { type: 'submit', className: 'btn btn-lg btn-primary btn-block' },
-                        'Login'
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group row login-tools' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-6 login-remember' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'label',
-                            { className: 'custom-control custom-checkbox mt-2' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox', checked: this.state.remember, onChange: this.handleRememberChange, name: 'remember', className: 'custom-control-input' }),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'custom-control-indicator' }),
+                            'div',
+                            { className: 'input-group' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'custom-control-description' },
-                                'Remember me'
-                            )
+                                { className: 'input-group-addon' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon s7-user' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'username', type: 'text', value: this.state.user, onChange: this.handleFormChange, placeholder: 'Username/ Email/ Mobile', autoComplete: 'off', autoFocus: true, className: 'form-control' }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ErrorTip, { invalid: this.state.usererr, msg: this.state.validationErrUsername })
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-6 pt-2 text-right login-forgot-password' },
+                        { className: 'form-group' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'a',
-                            { href: '#' },
-                            'Forgot Password?'
+                            'div',
+                            { className: 'input-group' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon s7-lock' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { id: 'password', type: 'password', value: this.state.password, onChange: this.handleFormChange, placeholder: 'Password', className: 'form-control' }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ErrorTip, { invalid: this.state.passworderr, msg: this.state.validationErrPasswd })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'form-group login-submit' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'button',
+                            { type: 'submit', ref: function ref(el) {
+                                    return _this2.submitBtn = el;
+                                }, className: 'btn btn-lg btn-primary btn-block' },
+                            'Login'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'form-group row login-tools' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-6 login-remember' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'label',
+                                { className: 'custom-control custom-checkbox mt-2' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'checkbox', checked: this.state.remember, onChange: this.handleRememberChange, name: 'remember', className: 'custom-control-input' }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'custom-control-indicator' }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'custom-control-description' },
+                                    'Remember me'
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-6 pt-2 text-right login-forgot-password' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                { href: trans._resetURI },
+                                'Forgot Password?'
+                            )
                         )
                     )
                 )
@@ -1316,15 +1915,12 @@ var LoginMain = function (_Component) {
     return LoginMain;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (LoginMain);
-
-
 if (document.getElementById('Login-module')) {
     __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(LoginMain, null), document.getElementById('Login-module'));
 }
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3029,7 +3625,7 @@ module.exports = ReactEntry;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3069,12 +3665,12 @@ if (false) {
   checkDCE();
   module.exports = require('./cjs/react-dom.production.min.js');
 } else {
-  module.exports = __webpack_require__(20);
+  module.exports = __webpack_require__(22);
 }
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3098,19 +3694,19 @@ var react = __webpack_require__(7);
 var invariant = __webpack_require__(3);
 var ExecutionEnvironment = __webpack_require__(10);
 var _assign = __webpack_require__(4);
-var EventListener = __webpack_require__(21);
+var EventListener = __webpack_require__(23);
 var require$$0 = __webpack_require__(2);
-var hyphenateStyleName = __webpack_require__(22);
+var hyphenateStyleName = __webpack_require__(24);
 var emptyFunction = __webpack_require__(1);
-var camelizeStyleName = __webpack_require__(24);
-var performanceNow = __webpack_require__(26);
-var propTypes = __webpack_require__(28);
+var camelizeStyleName = __webpack_require__(26);
+var performanceNow = __webpack_require__(28);
+var propTypes = __webpack_require__(30);
 var emptyObject = __webpack_require__(8);
 var checkPropTypes = __webpack_require__(5);
-var shallowEqual = __webpack_require__(30);
-var containsNode = __webpack_require__(31);
-var focusNode = __webpack_require__(34);
-var getActiveElement = __webpack_require__(35);
+var shallowEqual = __webpack_require__(32);
+var containsNode = __webpack_require__(33);
+var focusNode = __webpack_require__(36);
+var getActiveElement = __webpack_require__(37);
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -20302,7 +20898,7 @@ module.exports = ReactDOMFiberEntry;
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20382,7 +20978,7 @@ var EventListener = {
 module.exports = EventListener;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20397,7 +20993,7 @@ module.exports = EventListener;
 
 
 
-var hyphenate = __webpack_require__(23);
+var hyphenate = __webpack_require__(25);
 
 var msPattern = /^ms-/;
 
@@ -20424,7 +21020,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20460,7 +21056,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20475,7 +21071,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(25);
+var camelize = __webpack_require__(27);
 
 var msPattern = /^-ms-/;
 
@@ -20503,7 +21099,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20538,7 +21134,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20553,7 +21149,7 @@ module.exports = camelize;
  * @typechecks
  */
 
-var performance = __webpack_require__(27);
+var performance = __webpack_require__(29);
 
 var performanceNow;
 
@@ -20575,7 +21171,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20601,7 +21197,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = performance || {};
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20626,7 +21222,7 @@ if (true) {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(29)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(31)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
@@ -20635,7 +21231,7 @@ if (true) {
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21184,7 +21780,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21255,7 +21851,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21270,7 +21866,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(32);
+var isTextNode = __webpack_require__(34);
 
 /*eslint-disable no-bitwise */
 
@@ -21298,7 +21894,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21313,7 +21909,7 @@ module.exports = containsNode;
  * @typechecks
  */
 
-var isNode = __webpack_require__(33);
+var isNode = __webpack_require__(35);
 
 /**
  * @param {*} object The object to check.
@@ -21326,7 +21922,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21354,7 +21950,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21384,7 +21980,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21426,13 +22022,13 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(37);
+module.exports = __webpack_require__(39);
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21440,7 +22036,7 @@ module.exports = __webpack_require__(37);
 
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(11);
-var Axios = __webpack_require__(39);
+var Axios = __webpack_require__(41);
 var defaults = __webpack_require__(6);
 
 /**
@@ -21475,14 +22071,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(15);
-axios.CancelToken = __webpack_require__(54);
+axios.CancelToken = __webpack_require__(56);
 axios.isCancel = __webpack_require__(14);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(55);
+axios.spread = __webpack_require__(57);
 
 module.exports = axios;
 
@@ -21491,7 +22087,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports) {
 
 /*!
@@ -21518,7 +22114,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21526,8 +22122,8 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(6);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(49);
-var dispatchRequest = __webpack_require__(50);
+var InterceptorManager = __webpack_require__(51);
+var dispatchRequest = __webpack_require__(52);
 
 /**
  * Create a new instance of Axios
@@ -21604,7 +22200,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -21794,7 +22390,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21813,7 +22409,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21846,7 +22442,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21874,7 +22470,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21949,7 +22545,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22009,7 +22605,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22084,7 +22680,7 @@ module.exports = (
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22127,7 +22723,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22187,7 +22783,7 @@ module.exports = (
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22246,18 +22842,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(51);
+var transformData = __webpack_require__(53);
 var isCancel = __webpack_require__(14);
 var defaults = __webpack_require__(6);
-var isAbsoluteURL = __webpack_require__(52);
-var combineURLs = __webpack_require__(53);
+var isAbsoluteURL = __webpack_require__(54);
+var combineURLs = __webpack_require__(55);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -22339,7 +22935,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22366,7 +22962,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22387,7 +22983,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22408,7 +23004,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22472,7 +23068,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22506,7 +23102,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
@@ -22992,13 +23588,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, 
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(58);
+var content = __webpack_require__(60);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -23006,7 +23602,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(60)(content, options);
+var update = __webpack_require__(17)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -23023,458 +23619,17 @@ if(false) {
 }
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(59)(undefined);
+exports = module.exports = __webpack_require__(16)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/* Make clicks pass-through */\r\n#nprogress {\r\n  pointer-events: none;\r\n}\r\n\r\n#nprogress .bar {\r\n  background: #ede907;\r\n\r\n  position: fixed;\r\n  z-index: 1031;\r\n  top: 0;\r\n  left: 0;\r\n\r\n  width: 100%;\r\n  height: 2px;\r\n}\r\n\r\n/* Fancy blur effect */\r\n#nprogress .peg {\r\n  display: block;\r\n  position: absolute;\r\n  right: 0px;\r\n  width: 100px;\r\n  height: 100%;\r\n  box-shadow: 0 0 10px #ede907, 0 0 5px #ede907;\r\n  opacity: 1.0;\r\n\r\n  -webkit-transform: rotate(3deg) translate(0px, -4px);\r\n      -ms-transform: rotate(3deg) translate(0px, -4px);\r\n          transform: rotate(3deg) translate(0px, -4px);\r\n}\r\n\r\n/* Remove these to get rid of the spinner */\r\n#nprogress .spinner {\r\n  display: block;\r\n  position: fixed;\r\n  z-index: 1031;\r\n  top: 15px;\r\n  right: 15px;\r\n}\r\n\r\n#nprogress .spinner-icon {\r\n  width: 18px;\r\n  height: 18px;\r\n  box-sizing: border-box;\r\n\r\n  border: solid 2px transparent;\r\n  border-top-color: #ffffff;\r\n  border-left-color: #ffffff;\r\n  border-radius: 50%;\r\n\r\n  -webkit-animation: nprogress-spinner 400ms linear infinite;\r\n          animation: nprogress-spinner 400ms linear infinite;\r\n}\r\n\r\n.nprogress-custom-parent {\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n.nprogress-custom-parent #nprogress .spinner,\r\n.nprogress-custom-parent #nprogress .bar {\r\n  position: absolute;\r\n}\r\n\r\n@-webkit-keyframes nprogress-spinner {\r\n  0%   { -webkit-transform: rotate(0deg); }\r\n  100% { -webkit-transform: rotate(360deg); }\r\n}\r\n@keyframes nprogress-spinner {\r\n  0%   { transform: rotate(0deg); }\r\n  100% { transform: rotate(360deg); }\r\n}\r\n", ""]);
+exports.push([module.i, "/* Make clicks pass-through */\r\n#nprogress {\r\n  pointer-events: none;\r\n}\r\n\r\n#nprogress .bar {\r\n  background: #39c07e;\r\n\r\n  position: fixed;\r\n  z-index: 1031;\r\n  top: 0;\r\n  left: 0;\r\n\r\n  width: 100%;\r\n  height: 2px;\r\n}\r\n\r\n/* Fancy blur effect */\r\n#nprogress .peg {\r\n  display: block;\r\n  position: absolute;\r\n  right: 0px;\r\n  width: 100px;\r\n  height: 100%;\r\n  box-shadow: 0 0 10px #39c07e, 0 0 5px #39c07e;\r\n  opacity: 1.0;\r\n\r\n  -webkit-transform: rotate(3deg) translate(0px, -4px);\r\n      -ms-transform: rotate(3deg) translate(0px, -4px);\r\n          transform: rotate(3deg) translate(0px, -4px);\r\n}\r\n\r\n/* Remove these to get rid of the spinner */\r\n#nprogress .spinner {\r\n  display: block;\r\n  position: fixed;\r\n  z-index: 1031;\r\n  top: 15px;\r\n  right: 15px;\r\n}\r\n\r\n#nprogress .spinner-icon {\r\n  width: 18px;\r\n  height: 18px;\r\n  box-sizing: border-box;\r\n\r\n  border: solid 2px transparent;\r\n  border-top-color: #348ddb;\r\n  border-left-color: #348ddb;\r\n  border-radius: 50%;\r\n\r\n  -webkit-animation: nprogress-spinner 400ms linear infinite;\r\n          animation: nprogress-spinner 400ms linear infinite;\r\n}\r\n\r\n.nprogress-custom-parent {\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n.nprogress-custom-parent #nprogress .spinner,\r\n.nprogress-custom-parent #nprogress .bar {\r\n  position: absolute;\r\n}\r\n\r\n@-webkit-keyframes nprogress-spinner {\r\n  0%   { -webkit-transform: rotate(0deg); }\r\n  100% { -webkit-transform: rotate(360deg); }\r\n}\r\n@keyframes nprogress-spinner {\r\n  0%   { transform: rotate(0deg); }\r\n  100% { transform: rotate(360deg); }\r\n}\r\n", ""]);
 
 // exports
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(61);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
 
 
 /***/ }),
@@ -23570,6 +23725,51 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(63);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(17)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../node_modules/css-loader/index.js!./error-tooltip.css", function() {
+			var newContent = require("!!../../../../node_modules/css-loader/index.js!./error-tooltip.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(16)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".errtip {\r\n    font-weight: 700;\r\n    font-size: 85%;\r\n    color: #fff;\r\n    background: #ff4242;\r\n    border-radius: 4px;\r\n    /*top: -12px;*/\r\n    bottom: -30px;\r\n    min-width: 30px;\r\n    padding: 5px 10px;\r\n    position: absolute;\r\n    z-index: 999;\r\n}\r\n.errtip.right {\r\n    right: 0;\r\n}\r\n.errtip.right span.arrow{right: 10px;}\r\n.errtip .arrow {\r\n    position: absolute;\r\n    display: block;\r\n    /*bottom: -10px;*/\r\n    top: -10px;\r\n    width: 0;\r\n    height: 0;\r\n    border: 5px solid transparent;\r\n    /*border-top: 5px solid #ff4242;*/\r\n    border-bottom: 5px solid #ff4242;\r\n}\r\n.errtip .text {\r\n    white-space: nowrap;\r\n}\r\n", ""]);
+
+// exports
 
 
 /***/ })
