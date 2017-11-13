@@ -1,8 +1,12 @@
 @extends( 'layouts.backend.auth-reset-password' )
 
+@section( 'seo' )
+
 @component('components.backend.seo')
     {{ env('APP_NAME') }} - Admin Reset Password
 @endcomponent
+
+@stop
 
 
 @section( 'contents' )
