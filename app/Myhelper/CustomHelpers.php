@@ -243,3 +243,18 @@ if(! function_exists('return_if'))
     }
 }
 
+/**
+*returns current logged in admin's profile pic
+*/
+if(! function_exists('curr_admin_photo'))
+{
+    function curr_admin_photo()
+    {
+        if(Auth()->guard('admin')->check())
+        {
+            $photo = Auth()->user()->photo ?? 'blank.png';
+            return asset('assets/backend/img/profile/'.$photo);
+        }
+    }
+}
+

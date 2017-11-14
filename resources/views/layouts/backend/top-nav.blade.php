@@ -1,5 +1,5 @@
 <nav class="navbar navbar-full navbar-inverse navbar-fixed-top mai-top-header">
-    <div class="container"><a href="#" class="navbar-brand"></a>
+    <div class="container"><a href="{{ url('/') }}" class="navbar-brand" target="_blank"></a>
         <!--Left Menu-->
         <ul class="nav navbar-nav mai-top-nav">
           <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
@@ -111,7 +111,7 @@
         <ul class="nav navbar-nav float-lg-right mai-user-nav">
             <li class="dropdown nav-item">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle nav-link"> 
-                    <img src="assets/img/avatar.jpg"><span class="user-name">{{ Auth::user()->fname }}</span>
+                    <img src="{{ curr_admin_photo() }}"><span class="user-name">{{ Auth::user()->fname }}</span>
                     <span class="angle-down s7-angle-down"></span>
                 </a>
                 <div role="menu" class="dropdown-menu">
