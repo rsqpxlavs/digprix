@@ -118,7 +118,7 @@
                     <a href="#" class="dropdown-item"> 
                         <span class="icon s7-home"> </span>My Account
                     </a>
-                    <a href="#" class="dropdown-item"> 
+                    <a href="{{ route('admin.profile') }}" class="dropdown-item"> 
                         <span class="icon s7-user"> </span>Profile
                     </a>
                     <a href="#" class="dropdown-item"> 

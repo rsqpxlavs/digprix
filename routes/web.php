@@ -67,7 +67,7 @@ Route::prefix('admin')->group(function() {
     Route::group(['namespace' => 'Backend', 'middleware' => 'auth:admin'], function () {
         
         Route::get('/', 'AdminController@index')->name('admin.dashboard');
-
+        Route::get('/profile', 'ProfileCtrl@Visit')->name('admin.profile');
 
     });
 

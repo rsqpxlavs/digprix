@@ -38,22 +38,12 @@
         {{-- gritter notifications --}}
         <script src="{{ asset( 'assets/backend/lib/jquery.gritter/js/jquery.gritter.js' )}}" type="text/javascript"></script>
 
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.pie.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.time.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.resize.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/plugins/jquery.flot.orderBars.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/jquery-flot/plugins/curvedLines.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/lib/countup/countUp.min.js' )}}" type="text/javascript"></script>
-        <script src="{{ asset( 'assets/backend/js/app-dashboard.js' )}}" type="text/javascript"></script>
-
         @stack('scripts')
 
         <script type="text/javascript">
           $(document).ready(function(){
-            //initialize the javascript
+            
             App.init();
-            App.dashboard();
 
             {{-- gritter notifications --}}
             @if(session()->has('flash_msg'))
