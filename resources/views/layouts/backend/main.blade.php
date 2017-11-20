@@ -10,6 +10,10 @@
         <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/stroke-7/style.css' )}}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/perfect-scrollbar/css/perfect-scrollbar.min.css' )}}"/>
         <link href="{{ asset( 'assets/backend/lib/font-awesome/css/font-awesome.min.css' )}}" rel="stylesheet" />
+        
+        {{-- gritter notifications --}}
+        <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/jquery.gritter/css/jquery.gritter.css' )}}"/>
+
         <link rel="stylesheet" href="{{ asset( 'assets/backend/css/app.css' )}}" type="text/css"/>
 
         @stack('styles')
@@ -31,6 +35,9 @@
         <script src="{{ asset( 'assets/backend/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/bootstrap/dist/js/bootstrap.min.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/js/app.js' )}}" type="text/javascript"></script>
+        {{-- gritter notifications --}}
+        <script src="{{ asset( 'assets/backend/lib/jquery.gritter/js/jquery.gritter.js' )}}" type="text/javascript"></script>
+
         <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.pie.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/jquery-flot/jquery.flot.time.js' )}}" type="text/javascript"></script>
@@ -47,6 +54,16 @@
             //initialize the javascript
             App.init();
             App.dashboard();
+
+            {{-- gritter notifications --}}
+            @if(session()->has('flash_msg'))
+            $.gritter.add({
+                title: "{{ session('flash_title') }}",
+                text: "{{ session('flash_msg') }}",
+                class_name: "{{ session('flas_class') }}"
+            });
+            @endif
+
           });
         </script>
     </body>

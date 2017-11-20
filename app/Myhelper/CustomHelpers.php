@@ -9,13 +9,24 @@ use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 
-
-if (! function_exists('adminflash')) {
+/**
+ * notification for admin panel
+ * available classes
+ * ------------------------------
+ * gritter-color primary, gritter-color info, gritter-color warning, gritter-color danger, gritter-color dark ... so many
+ * 
+ * @param string class name
+ * @param string title
+ * @param string text
+ * @return flash sesion containing notification data
+ */
+if (! function_exists('admin_notify')) {
     
-    function adminflash($type='info', $msg)
+    function admin_notify($class= 'gritter-color info', $title, $msg=null) : void
     {
-        Session::flash('flashtype', $type);
-        Session::flash('flashmsg', $msg);
+        Session::flash('flas_class', $class);
+        Session::flash('flash_title', $title);
+        Session::flash('flash_msg', $msg);
     }
 }
 
