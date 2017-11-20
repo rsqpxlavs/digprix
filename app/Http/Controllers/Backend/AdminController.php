@@ -26,4 +26,12 @@ class AdminController extends Controller
     {
         return view('backend.dashboard');
     }
+
+    /**
+     * the fallback route for not found 404 page
+     */
+    public function NotFound()
+    {
+        return view('errors.admin-404');
+    }
 }

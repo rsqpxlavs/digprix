@@ -70,5 +70,8 @@ Route::prefix('admin')->group(function() {
 
 
     });
+
+    //admin fallback route [404]
+    Route::fallback('Backend\AdminController@NotFound');
     
 });
