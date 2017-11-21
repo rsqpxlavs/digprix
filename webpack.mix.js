@@ -11,4 +11,5 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/assets/backend/js/react/login/LoginMain.js', 'public/assets/backend/js/custom');
+mix.react('resources/assets/backend/js/react/login/LoginMain.js', 'public/assets/backend/js/custom')
+    .js('resources/assets/backend/js/profile/upload-pic.js', 'public/assets/backend/js/custom');

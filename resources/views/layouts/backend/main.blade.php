@@ -31,6 +31,8 @@
         </div>
 
         <script src="{{ asset( 'assets/backend/lib/jquery/jquery.min.js' )}}" type="text/javascript"></script>
+        {{-- jcrop --}}
+	    <script src="{{ asset( 'assets/backend/plugins/jcrop-2.0.4/Jcrop.js' ) }}" />
         <script src="{{ asset( 'assets/backend/lib/tether/js/tether.min.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/bootstrap/dist/js/bootstrap.min.js' )}}" type="text/javascript"></script>
@@ -42,7 +44,7 @@
 
         <script type="text/javascript">
           $(document).ready(function(){
-            
+
             App.init();
 
             {{-- gritter notifications --}}
