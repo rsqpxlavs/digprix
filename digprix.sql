@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2017 at 07:03 AM
+-- Generation Time: Nov 28, 2017 at 09:23 PM
 -- Server version: 10.2.6-MariaDB
--- PHP Version: 7.1.6
+-- PHP Version: 7.1.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -49,7 +49,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', NULL, NULL, 'srv.nxr@gmail.com', 'sourav', '121212', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'fXRQBzqocT2EhnBu0a91q8yQgZDv1MqCO9c5fyZQiWyYbOKID4dFwTBNRRrP', 1, 1, '2017-10-17 09:49:29', '2017-10-17 09:49:29');
+(1, 'Sourav', 'Rakshit', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '121212', '$2y$10$si1r5XEvG7H8FWhKf6nSr.ji5dgbZte2Jb5p1qhJg3rXywNZr/Wi2', 'd6BBeWuDgEVhajDoKStej3U5PNYevHIoFJ0zzlMl6hybyeOByHxHxtGC3g7A', 1, 1, '2017-10-17 09:49:29', '2017-11-28 14:51:53');
 
 -- --------------------------------------------------------
 
@@ -62,13 +62,6 @@ CREATE TABLE `admin_password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `admin_password_resets`
---
-
-INSERT INTO `admin_password_resets` (`email`, `token`, `created_at`) VALUES
-('srv.nxr@gmail.com', '$2y$10$uIV7hp8U2o4ZgFtlcvUaNePOtvi2g4Z.xE1FPk/CODWVh.a2Jp/7m', '2017-10-17 08:59:02');
 
 -- --------------------------------------------------------
 
@@ -160,7 +153,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'af62dcEipJQXUWW3JK0EZDvFkyOVZjWOXBKxWsc62laGLFR8lk21Kc8OWOSI', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
+(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'VDPffAiEwdOfCJvyjE9EzUW5J5fjhE4zAuZeft474Bd8i2QWVLF75kL6rv8G', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
 
 --
 -- Indexes for dumped tables
@@ -221,26 +214,31 @@ ALTER TABLE `users`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

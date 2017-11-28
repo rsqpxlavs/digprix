@@ -14,6 +14,7 @@
         {{-- gritter notifications --}}
         <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/jquery.gritter/css/jquery.gritter.css' )}}"/>
 
+        <link rel="stylesheet" href="{{ asset( 'assets/backend/css/custom.css' )}}" type="text/css"/>
         <link rel="stylesheet" href="{{ asset( 'assets/backend/css/app.css' )}}" type="text/css"/>
 
         @stack('styles')

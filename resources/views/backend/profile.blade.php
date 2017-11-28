@@ -25,7 +25,25 @@
 						<div class="user-display-cover"><img src="{{ asset('assets/backend/img/profile-cover/cover.jpg') }}" alt="cover"></div>
 						<div class="user-display-bottom">
 							<div class="user-display-id"><img src="{{ curr_admin_photo() }}" alt="avatar" class="user-display-avatar">
-								<div class="user-display-name">{{ Auth()->user()->fname }}</div>
+								<div class="user-display-name">{{ Auth()->user()->fname .' '. Auth()->user()->lname }}</div>
+							</div>
+							<div class="user-display-stats">
+								<div class="user-display-stat">
+									<span class="user-display-stat-counter">26</span>
+									<span class="user-display-stat-title">Products</span>
+								</div>
+								<div class="user-display-stat">
+									<span class="user-display-stat-counter">165</span>
+									<span class="user-display-stat-title">Review Checked</span>
+								</div>
+								<div class="user-display-stat">
+									<span class="user-display-stat-counter">43</span>
+									<span class="user-display-stat-title">Followers</span>
+								</div>
+								<div class="user-display-stat">
+									<span class="user-display-stat-counter">157</span>
+									<span class="user-display-stat-title">Following</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -138,40 +156,12 @@
 				<div class="col-md-5">
 					<div class="user-info-list panel panel-default">
 						<div class="panel-heading panel-heading-divider">Change Password
-							<span class="panel-subtitle">This is the horizontal bootstrap layout</span>
+							<span class="panel-subtitle text-danger">*make sure to enter at least 8 character</span>
 						</div>
 						<div class="panel-body">
-							<form>
-								<div class="form-group row mt-4">
-									<label class="col-2 col-form-label">Current Password</label>
-									<div class="col-10">
-										<input type="password" placeholder="Your Current Password" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-2 col-form-label">New Password</label>
-									<div class="col-10">
-										<input type="password" placeholder="Enter New password" class="form-control">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-2 col-form-label">Confirm New Password</label>
-									<div class="col-10">
-										<input type="password" placeholder="Re-Enter New password" class="form-control">
-									</div>
-								</div>
-								<div class="row pt-5">
-									<div class="col-6">
-										
-									</div>
-									<div class="col-6">
-										<p class="text-right">
-											<button type="submit" class="btn btn-space btn-primary">Save Changes</button>
-											<button type="button" class="btn btn-space btn-secondary">Cancel</button>
-										</p>
-									</div>
-								</div>
-							</form>
+
+							<div id="passwd"></div>
+
 						</div>
 					</div>
 				</div>
@@ -252,5 +242,7 @@
 		});
 	});
 </script>
+
+<script src="{{ asset( 'assets/backend/js/custom/password-main.js' ) }}"></script>
 
 @endpush
