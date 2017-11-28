@@ -1,7 +1,4 @@
 import axios from 'axios';
-import jQuery from 'jquery';
-
-const $ = jQuery;
 
 function validateImage(filename)
 {
@@ -15,29 +12,27 @@ function validateImage(filename)
 }
 
 function afterInitialAjaxUpload() {
-    let uploadField = $("input#upload-field");
-    let output = $("#progress-output");
+    let uploadField = document.querySelector("input#upload-field");
+    let output = document.querySelector("#progress-output");
 
     //active the file field
-    uploadField.prop('disabled', false);
+    uploadField.removeAttribute('disabled');
 
     //reset the uplad progress
-    output.hide();
-    output.attr('aria-valuenow', '00');
-    output.css('width', '0%');
-    output.html('0 %');
+    output.style.display = 'none';
+    output.setAttribute('aria-valuenow', '00');
+    output.style.width = '0%';
+    output.innerHTML = '0 %';
 }
 
-$(document).ready(function(){
-    let uploadField = $("input#upload-field");
-    let output = $("#progress-output");
-    let saveClrBtns = $("#pic-save-section");
+(function () {
+    let uploadField = document.querySelector("input#upload-field");
+    let output = document.querySelector("#progress-output");
+    let saveClrBtns = document.querySelector("#pic-save-section");
 
-    uploadField.on('change', () => {
-        if (validateImage(uploadField.val()))
+    uploadField.onchange = () => {
+        if (validateImage(uploadField.value))
         {
-            //disable the file type field
-            //uploadField.attr('disabled', 'disabled');
 
             //upload image via ajax
             let data = new FormData();
@@ -48,10 +43,10 @@ $(document).ready(function(){
                 onUploadProgress: function (progressEvent) {
                     let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     if (percentCompleted > 0) {
-                        $("#op-progress").show();
-                        output.attr('aria-valuenow', percentCompleted);
-                        output.css('width', `${percentCompleted}%`);
-                        output.html(`${percentCompleted} %`);
+                        document.getElementById("op-progress").style.display = 'block';
+                        output.setAttribute('aria-valuenow', percentCompleted);
+                        output.style.width = `${percentCompleted}%`;
+                        output.innerHTML = `${percentCompleted} %`;
                     }
                 },
             };
@@ -60,23 +55,23 @@ $(document).ready(function(){
                 .then(function (res) {
 
                     //set the image in proper place to init the j crop
-                    $("div#interface").html(`<img width="400" src="${res.data.theimage}" id="target">`);
+                    document.querySelector("div#interface").innerHTML = `<img width="400" src="${res.data.theimage}" id="target">`;
 
                     //show the save image & clear btns
-                    saveClrBtns.show();
+                    saveClrBtns.style.display = 'block';
 
                     afterInitialAjaxUpload();
                     
                     //trigger j crop
-                    $("button#tmp-upload-success").click();
+                    document.querySelector("button#tmp-upload-success").click();
                     
                 })
                 .catch(function (err) {
                     afterInitialAjaxUpload();
 
-                    saveClrBtns.hide();
+                    saveClrBtns.style.display = 'none';
 
-                    $("div#interface").html('');
+                    document.querySelector("div#interface").innerHTML = '';
 
                     if (err.response.status == 422)
                     {
@@ -90,5 +85,6 @@ $(document).ready(function(){
         {
             alert('invalid image');
         }
-    });
-});
+    };
+
+})();

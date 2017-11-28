@@ -70,6 +70,7 @@ Route::prefix('admin')->group(function() {
         Route::get('/profile', 'ProfileCtrl@Visit')->name('admin.profile');
         Route::post('/profile/upload/tmp-profile', 'ProfileCtrl@UploadInitialAjaxTmpPicture')->name('admin.upload.tmp-profile-pic');
         Route::post('/profile/remove/tmp-profile', 'ProfileCtrl@RemoveInitialAjaxTmpPicture')->name('admin.remove.tmp-profile-pic');
+        Route::post('/profile/upload/cropped', 'ProfileCtrl@UploadAfterCropping')->name('admin.upload.cropped-profile-pic');
 
     });
 

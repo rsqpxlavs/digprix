@@ -46,7 +46,7 @@
 
 							<div class="panel-body">
 
-								<form action="" method="POST">
+								<form action="{{ route('admin.upload.cropped-profile-pic') }}" method="POST">
 
 									{{ csrf_field() }}
 
@@ -65,9 +65,9 @@
 									</div>
 
 									<input type="hidden" id="crop-x" name="crop-x" value="" />
-									<input type="hidden" id="crop-x2" name="crop-x2" value="" />
 									<input type="hidden" id="crop-y" name="crop-y" value="" />
-									<input type="hidden" id="crop-y2" name="crop-y2" value="" />
+									<input type="hidden" id="crop-w" name="width" value="" />
+									<input type="hidden" id="crop-h" name="height" value="" />
 
 									<div class="row pt-5" id="pic-save-section" style="display:none;">
 										<div class="col-6">
@@ -187,7 +187,6 @@
 @include('layouts.backend.transformer')
 <script src="{{ asset( 'assets/backend/js/custom/upload-pic.js' ) }}"></script>
 
-{{-- jcrop --}}
 <script>
 	/**
 	* remove the temporary profile image
@@ -204,6 +203,7 @@
 			success: function (result) {
 				$("#pic-save-section").hide();
 				$("#interface").html('');
+				$("input#upload-field").val('');
 			},
 			error: function (xhr, status, error) {
 				$.gritter.add({
@@ -216,32 +216,40 @@
 		$.ajax();
 
 	}
+</script>
 
+{{-- jcrop --}}
+<script src="{{ asset( 'assets/backend/plugins/jcrop-2.0.4/Jcrop.js' ) }}" />
+
+<script type="text/javascript">
+	function jCInit()
+	{
+		//
+	}
+</script>
+
+<script type="text/javascript">
 	$(document).ready(function(){
-		// var d = document, ge = 'getElementById';
-
-		$('#interface').on('cropmove cropend', function (e, s, c) {
-			$("input#crop-x").val(c.x);
-			$("input#crop-x2").val(c.x2);
-			$("input#crop-y").val(c.y);
-			$("input#crop-y2").val(c.y2);
-			$("input#crop-w").val(140); //hard coded as we accept only 140x140 px
-			$("input#crop-h").val(140);
-		});
-
-			$("button#tmp-upload-success").on('click', function(){
-				$('#target').Jcrop({
-					boxWidth: 400,
-					setSelect: [160, 100, 140, 140],
-					maxSize: [140, 140],
-					minSize: [100, 100],
-					aspectRatio: 1,
-					canResize: true,
-					allowSelect: false
-				});
+		$("button#tmp-upload-success").on('click', function(){
+			$('#interface').on('cropmove cropend', function (e, s, c) {
+				$("input#crop-x").val(parseInt(c.x));
+				// $("input#crop-x2").val(c.x2);
+				$("input#crop-y").val(parseInt(c.y));
+				// $("input#crop-y2").val(c.y2);
+				$("input#crop-w").val(parseInt(c.w));
+				$("input#crop-h").val(parseInt(c.h));
 			});
-
-		
+			
+			$('#target').Jcrop({
+				boxWidth: 400,
+				setSelect: [160, 100, 140, 140],
+				maxSize: [200, 200],
+				minSize: [100, 100],
+				aspectRatio: 1,
+				canResize: true,
+				allowSelect: false
+			});
+		});
 	});
 </script>
 

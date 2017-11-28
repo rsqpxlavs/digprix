@@ -15445,7 +15445,6 @@ form.dropzone {
 .user-display-avatar {
   width: 178px;
   height: 178px;
-  border-radius: 50%;
   margin-bottom: 0.769231rem; }
   @media (max-width: 767px) {
     .user-display-avatar {

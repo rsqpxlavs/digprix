@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use JavaScript;
 use Illuminate\Support\Facades\Session;
+use Image;
 
 class ProfileCtrl extends Controller
 {
@@ -87,6 +88,55 @@ class ProfileCtrl extends Controller
                 return response('remove success', 200);
             }
         }
+    }
+
+    /**
+     * upload cropped profile picture
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function UploadAfterCropping(Request $request)
+    {
+        $request->validate([
+            'crop-x'    =>  'required|integer',
+            'width'   => 'required|integer',
+            'crop-y'    => 'required|integer',
+            'height'   => 'required|integer',
+        ]);
+
+        //if previously there is a tmp profile picture uploaded for cropping
+        if ($request->session()->has('tmp-profile'))
+        {
+            //intervention cropping
+            $tmp_uploaded_to = 'assets/backend/img/profile/tmp/';
+            $destinationPath = 'assets/backend/img/profile/';
+            $image = session()->pull('tmp-profile');
+
+            $filename = pathinfo($image, PATHINFO_FILENAME);
+            $extension = pathinfo($image, PATHINFO_EXTENSION);
+            $save_as = (file_exists($destinationPath . $image)) ? $filename . time() . '.' . $extension : $image;
+
+            Image::make($tmp_uploaded_to . $image)
+                    ->crop($request->input('width'), $request->input('height'), $request->input('crop-x'), $request->input('crop-y'))
+                    ->save($destinationPath . $save_as);
+
+
+            //delete existing database image, the temporary image & database update profile pic
+            $admin = Auth::user();
+
+            unlink($tmp_uploaded_to . $image);
+            if($admin->photo) unlink($destinationPath . $admin->photo);
+
+            $admin->photo = $save_as;
+            $admin->save();
+
+            admin_notify('gritter-color info', 'Uploaded Successfully !', 'profile picture updated');
+            return redirect()->back();
+        }
+
+        //else image upload makes no sense
+        admin_notify('gritter-color warning', 'Oops ! something went wrong', 'please try again image upload error');
+        return redirect()->back();
     }
 
 }
