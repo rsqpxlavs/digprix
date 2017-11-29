@@ -91,9 +91,9 @@ class PasswordFields extends Component {
         this.clearPasswd = this.clearPasswd.bind(this);
     };
 
-    generateNewPassword()
+    generateNewPassword(char)
     {
-        const newPassword = randomPassword(10);
+        const newPassword = randomPassword(char);
         this.setState({ generatedPasswd: newPassword, newpasswdgenerated: true, copied: false });
     }
 
@@ -127,7 +127,7 @@ class PasswordFields extends Component {
                 <div className="row mt-4">
                     {this.state.newpasswdgenerated ?
                         <div style={{ marginLeft: '17px' }}>
-                            <input ref={(el) => this.tmpelem = el} type="text" className="passwd-copy-fld-tmp" value={this.state.generatedPasswd} /> &nbsp;&nbsp;&nbsp; <a className="text-danger" onClick={this.clearPasswd} href="#"><i className="fa fa-times-circle fa-lg" aria-hidden="true"></i></a>
+                            <input ref={(el) => this.tmpelem = el} type="text" className="passwd-copy-fld-tmp" value={this.state.generatedPasswd} readOnly="readonly" /> &nbsp;&nbsp;&nbsp; <a className="text-danger" onClick={this.clearPasswd} href="#"><i className="fa fa-times-circle fa-lg" aria-hidden="true"></i></a>
                         </div>
                         :
                         null
@@ -165,13 +165,26 @@ class PasswordFields extends Component {
 class GenerateBtn extends Component {
     constructor(props) {
         super(props);
-    };
+        this.state = {passwordLength: 8};
+        this.lengthSelect = this.lengthSelect.bind(this);
+    }
+
+    lengthSelect(length){
+        this.setState({ passwordLength: length});
+        this.props.onGenerateClick(length);
+    }
 
     render() {
         return (
-            <button type="button" onClick={this.props.onGenerateClick} className="btn btn-rounded btn-space btn-secondary">
-                <i className="icon icon-left s7-lock"></i> Gen. Password
-            </button>
+            <div className="btn-group btn-space">
+                <button type="button" onClick={this.props.onGenerateClick.bind(this, this.state.passwordLength)} className="btn btn-secondary"><i className="icon icon-left s7-lock"></i> Gen. Password</button>
+                <button type="button" data-toggle="dropdown" className="btn btn-secondary dropdown-toggle dropdown-toggle-split" aria-expanded="false"><span className="s7-angle-down"></span><span className="sr-only">Toggle Dropdown</span></button>
+                <div role="menu" className="dropdown-menu">
+                    <a href="javascript:void(0);" onClick={this.lengthSelect.bind(this, 8)} className="dropdown-item">8 Character</a>
+                    <a href="javascript:void(0);" onClick={this.lengthSelect.bind(this, 12)} className="dropdown-item">12 Character</a>
+                    <a href="javascript:void(0);" onClick={this.lengthSelect.bind(this, 16)} className="dropdown-item">16 Character</a>
+                </div>
+            </div>
         );
     }
 }

@@ -17928,8 +17928,8 @@ var PasswordFields = function (_Component3) {
 
     _createClass(PasswordFields, [{
         key: 'generateNewPassword',
-        value: function generateNewPassword() {
-            var newPassword = randomPassword(10);
+        value: function generateNewPassword(char) {
+            var newPassword = randomPassword(char);
             this.setState({ generatedPasswd: newPassword, newpasswdgenerated: true, copied: false });
         }
     }, {
@@ -17971,7 +17971,7 @@ var PasswordFields = function (_Component3) {
                         { style: { marginLeft: '17px' } },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { ref: function ref(el) {
                                 return _this4.tmpelem = el;
-                            }, type: 'text', className: 'passwd-copy-fld-tmp', value: this.state.generatedPasswd }),
+                            }, type: 'text', className: 'passwd-copy-fld-tmp', value: this.state.generatedPasswd, readOnly: 'readonly' }),
                         ' \xA0\xA0\xA0 ',
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'a',
@@ -18025,17 +18025,60 @@ var GenerateBtn = function (_Component4) {
     function GenerateBtn(props) {
         _classCallCheck(this, GenerateBtn);
 
-        return _possibleConstructorReturn(this, (GenerateBtn.__proto__ || Object.getPrototypeOf(GenerateBtn)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (GenerateBtn.__proto__ || Object.getPrototypeOf(GenerateBtn)).call(this, props));
+
+        _this5.state = { passwordLength: 8 };
+        _this5.lengthSelect = _this5.lengthSelect.bind(_this5);
+        return _this5;
     }
 
     _createClass(GenerateBtn, [{
+        key: 'lengthSelect',
+        value: function lengthSelect(length) {
+            this.setState({ passwordLength: length });
+            this.props.onGenerateClick(length);
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'button',
-                { type: 'button', onClick: this.props.onGenerateClick, className: 'btn btn-rounded btn-space btn-secondary' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon icon-left s7-lock' }),
-                ' Gen. Password'
+                'div',
+                { className: 'btn-group btn-space' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { type: 'button', onClick: this.props.onGenerateClick.bind(this, this.state.passwordLength), className: 'btn btn-secondary' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon icon-left s7-lock' }),
+                    ' Gen. Password'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { type: 'button', 'data-toggle': 'dropdown', className: 'btn btn-secondary dropdown-toggle dropdown-toggle-split', 'aria-expanded': 'false' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 's7-angle-down' }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'sr-only' },
+                        'Toggle Dropdown'
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { role: 'menu', className: 'dropdown-menu' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'a',
+                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 8), className: 'dropdown-item' },
+                        '8 Character'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'a',
+                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 12), className: 'dropdown-item' },
+                        '12 Character'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'a',
+                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 16), className: 'dropdown-item' },
+                        '16 Character'
+                    )
+                )
             );
         }
     }]);
