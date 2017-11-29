@@ -444,7 +444,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.1.0
+/** @license React v16.2.0
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -455,20 +455,46 @@ module.exports = checkPropTypes;
 
 
 
+
+
 if (true) {
   (function() {
 'use strict';
 
 var _assign = __webpack_require__(6);
-var invariant = __webpack_require__(2);
 var emptyObject = __webpack_require__(7);
+var invariant = __webpack_require__(2);
 var warning = __webpack_require__(3);
 var emptyFunction = __webpack_require__(1);
 var checkPropTypes = __webpack_require__(8);
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.1.0';
+var ReactVersion = '16.2.0';
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol['for'];
+
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol['for']('react.element') : 0xeac7;
+var REACT_CALL_TYPE = hasSymbol ? Symbol['for']('react.call') : 0xeac8;
+var REACT_RETURN_TYPE = hasSymbol ? Symbol['for']('react.return') : 0xeac9;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol['for']('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol['for']('react.fragment') : 0xeacb;
+
+var MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+var FAUX_ITERATOR_SYMBOL = '@@iterator';
+
+function getIteratorFn(maybeIterable) {
+  if (maybeIterable === null || typeof maybeIterable === 'undefined') {
+    return null;
+  }
+  var maybeIterator = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL];
+  if (typeof maybeIterator === 'function') {
+    return maybeIterator;
+  }
+  return null;
+}
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -476,21 +502,6 @@ var ReactVersion = '16.1.0';
  * and will _only_ be required by the corresponding babel pass.
  * It always throws.
  */
-
-// Exports React.Fragment
-var enableReactFragment = false;
-// Exports ReactDOM.createRoot
-
-
-
-// Mutating mode (React DOM, React ART, React Native):
-
-// Experimental noop mode (currently unused):
-
-// Experimental persistent mode (CS):
-
-
-// Only used in www builds.
 
 /**
  * Forked from fbjs/warning:
@@ -771,10 +782,6 @@ var ReactCurrentOwner = {
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var REACT_ELEMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
-
 var RESERVED_PROPS = {
   key: true,
   ref: true,
@@ -860,7 +867,7 @@ function defineRefPropWarningGetter(props, displayName) {
 var ReactElement = function (type, key, ref, self, source, owner, props) {
   var element = {
     // This tag allow us to uniquely identify this as a React Element
-    $$typeof: REACT_ELEMENT_TYPE$1,
+    $$typeof: REACT_ELEMENT_TYPE,
 
     // Built-in properties that belong on the element
     type: type,
@@ -975,7 +982,7 @@ function createElement(type, config, children) {
   }
   {
     if (key || ref) {
-      if (typeof props.$$typeof === 'undefined' || props.$$typeof !== REACT_ELEMENT_TYPE$1) {
+      if (typeof props.$$typeof === 'undefined' || props.$$typeof !== REACT_ELEMENT_TYPE) {
         var displayName = typeof type === 'function' ? type.displayName || type.name || 'Unknown' : type;
         if (key) {
           defineKeyPropWarningGetter(props, displayName);
@@ -1075,7 +1082,7 @@ function cloneElement(element, config, children) {
  * @final
  */
 function isValidElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE$1;
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
 }
 
 var ReactDebugCurrentFrame = {};
@@ -1093,12 +1100,6 @@ var ReactDebugCurrentFrame = {};
   };
 }
 
-var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
-var REACT_PORTAL_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.portal') || 0xeaca;
 var SEPARATOR = '.';
 var SUBSEPARATOR = ':';
 
@@ -1182,10 +1183,28 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
     children = null;
   }
 
-  if (children === null || type === 'string' || type === 'number' ||
-  // The following is inlined from ReactElement. This means we can optimize
-  // some checks. React Fiber also inlines this logic for similar purposes.
-  type === 'object' && children.$$typeof === REACT_ELEMENT_TYPE || type === 'object' && children.$$typeof === REACT_PORTAL_TYPE) {
+  var invokeCallback = false;
+
+  if (children === null) {
+    invokeCallback = true;
+  } else {
+    switch (type) {
+      case 'string':
+      case 'number':
+        invokeCallback = true;
+        break;
+      case 'object':
+        switch (children.$$typeof) {
+          case REACT_ELEMENT_TYPE:
+          case REACT_CALL_TYPE:
+          case REACT_RETURN_TYPE:
+          case REACT_PORTAL_TYPE:
+            invokeCallback = true;
+        }
+    }
+  }
+
+  if (invokeCallback) {
     callback(traverseContext, children,
     // If it's the only child, treat the name as if it was wrapped in an array
     // so that it's consistent if the number of children grows.
@@ -1205,7 +1224,7 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
       subtreeCount += traverseAllChildrenImpl(child, nextName, callback, traverseContext);
     }
   } else {
-    var iteratorFn = ITERATOR_SYMBOL && children[ITERATOR_SYMBOL] || children[FAUX_ITERATOR_SYMBOL];
+    var iteratorFn = getIteratorFn(children);
     if (typeof iteratorFn === 'function') {
       {
         // Warn about using Maps as children
@@ -1429,6 +1448,8 @@ function getComponentName(fiber) {
 {
   var currentlyValidatingElement = null;
 
+  var propTypesMisspellWarningShown = false;
+
   var getDisplayName = function (element) {
     if (element == null) {
       return '#empty';
@@ -1436,7 +1457,7 @@ function getComponentName(fiber) {
       return '#text';
     } else if (typeof element.type === 'string') {
       return element.type;
-    } else if (element.type === REACT_FRAGMENT_TYPE$1) {
+    } else if (element.type === REACT_FRAGMENT_TYPE) {
       return 'React.Fragment';
     } else {
       return element.type.displayName || element.type.name || 'Unknown';
@@ -1454,13 +1475,8 @@ function getComponentName(fiber) {
     return stack;
   };
 
-  var REACT_FRAGMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
-
   var VALID_FRAGMENT_PROPS = new Map([['children', true], ['key', true]]);
 }
-
-var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL$1 = '@@iterator'; // Before Symbol spec.
 
 function getDeclarationErrorAddendum() {
   if (ReactCurrentOwner.current) {
@@ -1566,7 +1582,7 @@ function validateChildKeys(node, parentType) {
       node._store.validated = true;
     }
   } else if (node) {
-    var iteratorFn = ITERATOR_SYMBOL$1 && node[ITERATOR_SYMBOL$1] || node[FAUX_ITERATOR_SYMBOL$1];
+    var iteratorFn = getIteratorFn(node);
     if (typeof iteratorFn === 'function') {
       // Entry iterators used to provide implicit keys,
       // but now we print a separate warning for them later.
@@ -1596,11 +1612,13 @@ function validatePropTypes(element) {
   }
   var name = componentClass.displayName || componentClass.name;
   var propTypes = componentClass.propTypes;
-
   if (propTypes) {
     currentlyValidatingElement = element;
     checkPropTypes(propTypes, element.props, 'prop', name, getStackAddendum);
     currentlyValidatingElement = null;
+  } else if (componentClass.PropTypes !== undefined && !propTypesMisspellWarningShown) {
+    propTypesMisspellWarningShown = true;
+    warning(false, 'Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?', name || 'Unknown');
   }
   if (typeof componentClass.getDefaultProps === 'function') {
     warning(componentClass.getDefaultProps.isReactClassApproved, 'getDefaultProps is only used on classic React.createClass ' + 'definitions. Use a static property named `defaultProps` instead.');
@@ -1656,7 +1674,7 @@ function createElementWithValidation(type, props, children) {
   if (!validType) {
     var info = '';
     if (type === undefined || typeof type === 'object' && type !== null && Object.keys(type).length === 0) {
-      info += ' You likely forgot to export your component from the file ' + "it's defined in.";
+      info += ' You likely forgot to export your component from the file ' + "it's defined in, or you might have mixed up default and named imports.";
     }
 
     var sourceInfo = getSourceInfoErrorAddendum(props);
@@ -1690,7 +1708,7 @@ function createElementWithValidation(type, props, children) {
     }
   }
 
-  if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE$1) {
+  if (typeof type === 'symbol' && type === REACT_FRAGMENT_TYPE) {
     validateFragmentProps(element);
   } else {
     validatePropTypes(element);
@@ -1729,8 +1747,6 @@ function cloneElementWithValidation(element, props, children) {
   return newElement;
 }
 
-var REACT_FRAGMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.fragment') || 0xeacb;
-
 var React = {
   Children: {
     map: mapChildren,
@@ -1743,6 +1759,8 @@ var React = {
   Component: Component,
   PureComponent: PureComponent,
   unstable_AsyncComponent: AsyncComponent,
+
+  Fragment: REACT_FRAGMENT_TYPE,
 
   createElement: createElementWithValidation,
   cloneElement: cloneElementWithValidation,
@@ -1757,10 +1775,6 @@ var React = {
     assign: _assign
   }
 };
-
-if (enableReactFragment) {
-  React.Fragment = REACT_FRAGMENT_TYPE;
-}
 
 {
   _assign(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
@@ -17785,6 +17799,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__password_fields__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__generate_and_copy__ = __webpack_require__(65);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17792,6 +17807,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -17987,8 +18003,8 @@ var PasswordFields = function (_Component3) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col-8' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(GenerateBtn, { onGenerateClick: this.generateNewPassword }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CopyGeneratedPasswd, {
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__generate_and_copy__["b" /* GenerateBtn */], { onGenerateClick: this.generateNewPassword }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__generate_and_copy__["a" /* CopyGeneratedPasswd */], {
                             enablebtn: this.state.newpasswdgenerated,
                             copied: this.state.copied,
                             onPasswdCopyClick: this.handlePasswdCopyClick })
@@ -18014,136 +18030,7 @@ var PasswordFields = function (_Component3) {
     return PasswordFields;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/**
- * the generate button component
- */
-
-
-var GenerateBtn = function (_Component4) {
-    _inherits(GenerateBtn, _Component4);
-
-    function GenerateBtn(props) {
-        _classCallCheck(this, GenerateBtn);
-
-        var _this5 = _possibleConstructorReturn(this, (GenerateBtn.__proto__ || Object.getPrototypeOf(GenerateBtn)).call(this, props));
-
-        _this5.state = { passwordLength: 8 };
-        _this5.lengthSelect = _this5.lengthSelect.bind(_this5);
-        return _this5;
-    }
-
-    _createClass(GenerateBtn, [{
-        key: 'lengthSelect',
-        value: function lengthSelect(length) {
-            this.setState({ passwordLength: length });
-            this.props.onGenerateClick(length);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'btn-group btn-space' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'button',
-                    { type: 'button', onClick: this.props.onGenerateClick.bind(this, this.state.passwordLength), className: 'btn btn-secondary' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon icon-left s7-lock' }),
-                    ' Gen. Password'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'button',
-                    { type: 'button', 'data-toggle': 'dropdown', className: 'btn btn-secondary dropdown-toggle dropdown-toggle-split', 'aria-expanded': 'false' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 's7-angle-down' }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'span',
-                        { className: 'sr-only' },
-                        'Toggle Dropdown'
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { role: 'menu', className: 'dropdown-menu' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'a',
-                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 8), className: 'dropdown-item' },
-                        '8 Character'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'a',
-                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 12), className: 'dropdown-item' },
-                        '12 Character'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'a',
-                        { href: 'javascript:void(0);', onClick: this.lengthSelect.bind(this, 16), className: 'dropdown-item' },
-                        '16 Character'
-                    )
-                )
-            );
-        }
-    }]);
-
-    return GenerateBtn;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/**
- * the generate button component
- */
-
-
-var CopyGeneratedPasswd = function (_Component5) {
-    _inherits(CopyGeneratedPasswd, _Component5);
-
-    function CopyGeneratedPasswd(props) {
-        _classCallCheck(this, CopyGeneratedPasswd);
-
-        return _possibleConstructorReturn(this, (CopyGeneratedPasswd.__proto__ || Object.getPrototypeOf(CopyGeneratedPasswd)).call(this, props));
-    }
-
-    _createClass(CopyGeneratedPasswd, [{
-        key: 'render',
-        value: function render() {
-            var toreturn = this.props.enablebtn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'button',
-                { onClick: this.props.onPasswdCopyClick, type: 'button', className: 'btn btn-dark custom-tooltip' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    { className: 'custom-tooltiptext' },
-                    this.props.copied ? 'password copied' : 'copy password !'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'icon s7-copy-file' })
-            ) : null;
-            return toreturn;
-        }
-    }]);
-
-    return CopyGeneratedPasswd;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-var MainPasswordsComponent = function (_Component6) {
-    _inherits(MainPasswordsComponent, _Component6);
-
-    function MainPasswordsComponent(props) {
-        _classCallCheck(this, MainPasswordsComponent);
-
-        return _possibleConstructorReturn(this, (MainPasswordsComponent.__proto__ || Object.getPrototypeOf(MainPasswordsComponent)).call(this, props));
-    }
-
-    _createClass(MainPasswordsComponent, [{
-        key: 'render',
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(PasswordFields, null)
-            );
-        }
-    }]);
-
-    return MainPasswordsComponent;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(MainPasswordsComponent, null), document.getElementById('passwd'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(PasswordFields, null), document.getElementById('passwd'));
 
 /***/ }),
 /* 64 */
@@ -18201,6 +18088,127 @@ var FormInpFld = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (FormInpFld);
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return GenerateBtn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CopyGeneratedPasswd; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+/**
+ * the generate button component
+ */
+var GenerateBtn = function (_Component) {
+    _inherits(GenerateBtn, _Component);
+
+    function GenerateBtn(props) {
+        _classCallCheck(this, GenerateBtn);
+
+        var _this = _possibleConstructorReturn(this, (GenerateBtn.__proto__ || Object.getPrototypeOf(GenerateBtn)).call(this, props));
+
+        _this.state = { passwordLength: 8 };
+        _this.lengthSelect = _this.lengthSelect.bind(_this);
+        return _this;
+    }
+
+    _createClass(GenerateBtn, [{
+        key: "lengthSelect",
+        value: function lengthSelect(length) {
+            this.setState({ passwordLength: length });
+            this.props.onGenerateClick(length);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "btn-group btn-space" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "button",
+                    { type: "button", onClick: this.props.onGenerateClick.bind(this, this.state.passwordLength), className: "btn btn-secondary" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon icon-left s7-lock" }),
+                    " Gen. Password"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "button",
+                    { type: "button", "data-toggle": "dropdown", className: "btn btn-secondary dropdown-toggle dropdown-toggle-split", "aria-expanded": "false" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "s7-angle-down" }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "sr-only" },
+                        "Toggle Dropdown"
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { role: "menu", className: "dropdown-menu" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "a",
+                        { href: "javascript:void(0);", onClick: this.lengthSelect.bind(this, 8), className: "dropdown-item" },
+                        "8 Character"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "a",
+                        { href: "javascript:void(0);", onClick: this.lengthSelect.bind(this, 12), className: "dropdown-item" },
+                        "12 Character"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "a",
+                        { href: "javascript:void(0);", onClick: this.lengthSelect.bind(this, 16), className: "dropdown-item" },
+                        "16 Character"
+                    )
+                )
+            );
+        }
+    }]);
+
+    return GenerateBtn;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * the copy to clipboard component
+ */
+var CopyGeneratedPasswd = function (_Component2) {
+    _inherits(CopyGeneratedPasswd, _Component2);
+
+    function CopyGeneratedPasswd(props) {
+        _classCallCheck(this, CopyGeneratedPasswd);
+
+        return _possibleConstructorReturn(this, (CopyGeneratedPasswd.__proto__ || Object.getPrototypeOf(CopyGeneratedPasswd)).call(this, props));
+    }
+
+    _createClass(CopyGeneratedPasswd, [{
+        key: "render",
+        value: function render() {
+            var toreturn = this.props.enablebtn ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "button",
+                { onClick: this.props.onPasswdCopyClick, type: "button", className: "btn btn-dark custom-tooltip" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "span",
+                    { className: "custom-tooltiptext" },
+                    this.props.copied ? 'password copied' : 'copy password !'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon s7-copy-file" })
+            ) : null;
+            return toreturn;
+        }
+    }]);
+
+    return CopyGeneratedPasswd;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /***/ })
 /******/ ]);
