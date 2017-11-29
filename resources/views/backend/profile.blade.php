@@ -154,7 +154,7 @@
 				</div>
 
 				<div class="col-md-5">
-					<div class="user-info-list panel panel-default">
+					<div class="panel panel-default">
 						<div class="panel-heading panel-heading-divider">Change Password
 							<span class="panel-subtitle text-danger">*make sure to enter at least 8 character</span>
 						</div>

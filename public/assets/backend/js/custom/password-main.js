@@ -17784,6 +17784,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__password_fields__ = __webpack_require__(64);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17791,6 +17792,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
 
 
 
@@ -17809,101 +17812,160 @@ function randomPassword(length) {
 }
 
 /**
+ * password show hide eye btn component
+ */
+
+var EyeBtn = function (_Component) {
+    _inherits(EyeBtn, _Component);
+
+    function EyeBtn(props) {
+        _classCallCheck(this, EyeBtn);
+
+        var _this = _possibleConstructorReturn(this, (EyeBtn.__proto__ || Object.getPrototypeOf(EyeBtn)).call(this, props));
+
+        _this.state = { showpasswd: false };
+        _this.togglePassword = _this.togglePassword.bind(_this);
+        return _this;
+    }
+
+    _createClass(EyeBtn, [{
+        key: 'togglePassword',
+        value: function togglePassword() {
+            this.setState(function (prevState, props) {
+                return { showpasswd: !prevState.showpasswd };
+            });
+            this.props.onTogglePasswordShowClick(!this.state.showpasswd);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var btnIcon = this.state.showpasswd ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-eye', 'aria-hidden': 'true' }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-eye-slash', 'aria-hidden': 'true' });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { onClick: this.togglePassword, type: 'button', className: 'btn btn-secondary' },
+                btnIcon
+            );
+        }
+    }]);
+
+    return EyeBtn;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
+ * password field and its container along with the show/hide password btn
+ */
+
+
+var FieldAndBtn = function (_Component2) {
+    _inherits(FieldAndBtn, _Component2);
+
+    function FieldAndBtn(props) {
+        _classCallCheck(this, FieldAndBtn);
+
+        var _this2 = _possibleConstructorReturn(this, (FieldAndBtn.__proto__ || Object.getPrototypeOf(FieldAndBtn)).call(this, props));
+
+        _this2.state = { fieldType: 'password', fieldValueChanged: false };
+        _this2.handleToggleEvent = _this2.handleToggleEvent.bind(_this2);
+        _this2.fieldValChanged = _this2.fieldValChanged.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(FieldAndBtn, [{
+        key: 'handleToggleEvent',
+        value: function handleToggleEvent(show) {
+            if (show === true) this.setState({ fieldType: 'text' });else this.setState({ fieldType: 'password' });
+        }
+    }, {
+        key: 'fieldValChanged',
+        value: function fieldValChanged() {
+            this.setState({ fieldValueChanged: true });
+            this.props.onFieldValChange(true);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: this.props.theclassname },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'col-10' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__password_fields__["a" /* default */], { placeholder: this.props.placeholder, fieldtype: this.state.fieldType, onValueChange: this.fieldValChanged })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'col-2' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(EyeBtn, { onTogglePasswordShowClick: this.handleToggleEvent })
+                )
+            );
+        }
+    }]);
+
+    return FieldAndBtn;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/**
  * the entire password update form
  */
 
-var PasswordFields = function (_Component) {
-    _inherits(PasswordFields, _Component);
+
+var PasswordFields = function (_Component3) {
+    _inherits(PasswordFields, _Component3);
 
     function PasswordFields(props) {
         _classCallCheck(this, PasswordFields);
 
-        var _this = _possibleConstructorReturn(this, (PasswordFields.__proto__ || Object.getPrototypeOf(PasswordFields)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (PasswordFields.__proto__ || Object.getPrototypeOf(PasswordFields)).call(this, props));
 
-        _this.state = { newpassword: '', confpassword: '', newpasswdgenerated: false, copied: false };
-        _this.generateNewPassword = _this.generateNewPassword.bind(_this);
-        _this.handleNewPasswordChange = _this.handleNewPasswordChange.bind(_this);
-        _this.handleConfPasswordChange = _this.handleConfPasswordChange.bind(_this);
-        _this.handlePasswdCopyClick = _this.handlePasswdCopyClick.bind(_this);
-        return _this;
+        _this3.state = { generatedPasswd: '', newpasswdgenerated: false, copied: false };
+        _this3.generateNewPassword = _this3.generateNewPassword.bind(_this3);
+        _this3.handlePasswdCopyClick = _this3.handlePasswdCopyClick.bind(_this3);
+        _this3.valueChanged = _this3.valueChanged.bind(_this3);
+        return _this3;
     }
 
     _createClass(PasswordFields, [{
         key: 'generateNewPassword',
         value: function generateNewPassword() {
             var newPassword = randomPassword(10);
-            this.newPasswdFld.setAttribute('type', 'text');
-            this.setState({ newpassword: newPassword, confpassword: '', newpasswdgenerated: true, copied: false });
-        }
-    }, {
-        key: 'handleNewPasswordChange',
-        value: function handleNewPasswordChange(e) {
-            this.setState({ newpassword: e.target.value, newpasswdgenerated: false });
-            this.newPasswdFld.setAttribute('type', 'password');
-        }
-    }, {
-        key: 'handleConfPasswordChange',
-        value: function handleConfPasswordChange(e) {
-            this.setState({ confpassword: e.target.value });
+            this.setState({ generatedPasswd: newPassword, newpasswdgenerated: true, copied: false });
         }
     }, {
         key: 'handlePasswdCopyClick',
         value: function handlePasswdCopyClick(e) {
             this.setState({ copied: true });
-            this.newPasswdFld.select();
-            document.execCommand("Copy");
+            /*this.newPasswdFld.select();
+            document.execCommand("Copy");*/
+        }
+    }, {
+        key: 'valueChanged',
+        value: function valueChanged(status) {
+            //if it is the new password field
+            if (status === true) this.setState({ generatedPasswd: '', newpasswdgenerated: false, copied: false });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'form',
                 null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(FieldAndBtn, { theclassname: 'form-group row mt-4', placeholder: 'Your Current Password', onFieldValChange: this.valueChanged.bind(this, false) }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(FieldAndBtn, { theclassname: 'form-group row', placeholder: 'Enter New password', onFieldValChange: this.valueChanged.bind(this, true) }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(FieldAndBtn, { theclassname: 'form-group row mt-4', placeholder: 'Re-Enter New password', onFieldValChange: this.valueChanged.bind(this, false) }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'form-group row mt-4' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'label',
-                        { className: 'col-2 col-form-label' },
-                        'Current Password'
-                    ),
+                    { className: 'row mt-4' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-10' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'password', placeholder: 'Your Current Password', className: 'form-control' })
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'label',
-                        { className: 'col-2 col-form-label' },
-                        'New Password'
+                        { clasName: 'col-6 offset-4' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            null,
+                            this.state.generatedPasswd
+                        )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-10' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'password', ref: function ref(el) {
-                                return _this2.newPasswdFld = el;
-                            }, placeholder: 'Enter New password', onChange: this.handleNewPasswordChange, value: this.state.newpassword, className: 'form-control' })
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'form-group row' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'label',
-                        { className: 'col-2 col-form-label' },
-                        'Confirm New Password'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'col-10' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'password', placeholder: 'Re-Enter New password', onChange: this.handleConfPasswordChange, value: this.state.confpassword, className: 'form-control' })
-                    )
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'clearfix' })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -17943,8 +18005,8 @@ var PasswordFields = function (_Component) {
  */
 
 
-var GenerateBtn = function (_Component2) {
-    _inherits(GenerateBtn, _Component2);
+var GenerateBtn = function (_Component4) {
+    _inherits(GenerateBtn, _Component4);
 
     function GenerateBtn(props) {
         _classCallCheck(this, GenerateBtn);
@@ -17972,8 +18034,8 @@ var GenerateBtn = function (_Component2) {
  */
 
 
-var CopyGeneratedPasswd = function (_Component3) {
-    _inherits(CopyGeneratedPasswd, _Component3);
+var CopyGeneratedPasswd = function (_Component5) {
+    _inherits(CopyGeneratedPasswd, _Component5);
 
     function CopyGeneratedPasswd(props) {
         _classCallCheck(this, CopyGeneratedPasswd);
@@ -18001,8 +18063,8 @@ var CopyGeneratedPasswd = function (_Component3) {
     return CopyGeneratedPasswd;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-var MainPasswordsComponent = function (_Component4) {
-    _inherits(MainPasswordsComponent, _Component4);
+var MainPasswordsComponent = function (_Component6) {
+    _inherits(MainPasswordsComponent, _Component6);
 
     function MainPasswordsComponent(props) {
         _classCallCheck(this, MainPasswordsComponent);
@@ -18025,6 +18087,63 @@ var MainPasswordsComponent = function (_Component4) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(MainPasswordsComponent, null), document.getElementById('passwd'));
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+/**
+ * the form input fields
+ */
+
+var FormInpFld = function (_Component) {
+    _inherits(FormInpFld, _Component);
+
+    function FormInpFld(props) {
+        _classCallCheck(this, FormInpFld);
+
+        var _this = _possibleConstructorReturn(this, (FormInpFld.__proto__ || Object.getPrototypeOf(FormInpFld)).call(this, props));
+
+        _this.state = { value: '' };
+        _this.handleValueChange = _this.handleValueChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(FormInpFld, [{
+        key: 'handleValueChange',
+        value: function handleValueChange(e) {
+            this.setState({ value: e.target.value });
+            this.props.onValueChange();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var field = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'form-control', type: this.props.fieldtype,
+                placeholder: this.props.placeholder,
+                onChange: this.handleValueChange,
+                value: this.state.value });
+
+            return field;
+        }
+    }]);
+
+    return FormInpFld;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (FormInpFld);
 
 /***/ })
 /******/ ]);
