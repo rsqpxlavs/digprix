@@ -17922,6 +17922,7 @@ var PasswordFields = function (_Component3) {
         _this3.generateNewPassword = _this3.generateNewPassword.bind(_this3);
         _this3.handlePasswdCopyClick = _this3.handlePasswdCopyClick.bind(_this3);
         _this3.valueChanged = _this3.valueChanged.bind(_this3);
+        _this3.clearPasswd = _this3.clearPasswd.bind(_this3);
         return _this3;
     }
 
@@ -17935,8 +17936,15 @@ var PasswordFields = function (_Component3) {
         key: 'handlePasswdCopyClick',
         value: function handlePasswdCopyClick(e) {
             this.setState({ copied: true });
-            /*this.newPasswdFld.select();
-            document.execCommand("Copy");*/
+
+            this.tmpelem.select();
+            document.execCommand("Copy");
+        }
+    }, {
+        key: 'clearPasswd',
+        value: function clearPasswd(e) {
+            e.preventDefault();
+            this.setState({ generatedPasswd: '', newpasswdgenerated: false, copied: false });
         }
     }, {
         key: 'valueChanged',
@@ -17947,6 +17955,8 @@ var PasswordFields = function (_Component3) {
     }, {
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'form',
                 null,
@@ -17956,15 +17966,19 @@ var PasswordFields = function (_Component3) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'row mt-4' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    this.state.newpasswdgenerated ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { clasName: 'col-6 offset-4' },
+                        { style: { marginLeft: '17px' } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { ref: function ref(el) {
+                                return _this4.tmpelem = el;
+                            }, type: 'text', className: 'passwd-copy-fld-tmp', value: this.state.generatedPasswd }),
+                        ' \xA0\xA0\xA0 ',
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            null,
-                            this.state.generatedPasswd
+                            'a',
+                            { className: 'text-danger', onClick: this.clearPasswd, href: '#' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-times-circle fa-lg', 'aria-hidden': 'true' })
                         )
-                    ),
+                    ) : null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'clearfix' })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

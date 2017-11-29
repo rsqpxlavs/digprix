@@ -88,6 +88,7 @@ class PasswordFields extends Component {
         this.generateNewPassword = this.generateNewPassword.bind(this);
         this.handlePasswdCopyClick = this.handlePasswdCopyClick.bind(this);
         this.valueChanged = this.valueChanged.bind(this);
+        this.clearPasswd = this.clearPasswd.bind(this);
     };
 
     generateNewPassword()
@@ -99,8 +100,14 @@ class PasswordFields extends Component {
     handlePasswdCopyClick(e)
     {
         this.setState({ copied: true });
-        /*this.newPasswdFld.select();
-        document.execCommand("Copy");*/
+        
+        this.tmpelem.select();
+        document.execCommand("Copy");
+    }
+
+    clearPasswd(e){
+        e.preventDefault();
+        this.setState({ generatedPasswd: '', newpasswdgenerated: false, copied: false });
     }
 
     valueChanged(status){
@@ -118,9 +125,14 @@ class PasswordFields extends Component {
                 <FieldAndBtn theclassname="form-group row mt-4" placeholder="Re-Enter New password" onFieldValChange={this.valueChanged.bind(this, false)} />
 
                 <div className="row mt-4">
-                    <div clasName="col-6 offset-4">
-                        <span>{this.state.generatedPasswd}</span>
-                    </div>
+                    {this.state.newpasswdgenerated ?
+                        <div style={{ marginLeft: '17px' }}>
+                            <input ref={(el) => this.tmpelem = el} type="text" className="passwd-copy-fld-tmp" value={this.state.generatedPasswd} /> &nbsp;&nbsp;&nbsp; <a className="text-danger" onClick={this.clearPasswd} href="#"><i className="fa fa-times-circle fa-lg" aria-hidden="true"></i></a>
+                        </div>
+                        :
+                        null
+                    }
+                    
                     <div className="clearfix"></div>
                 </div>
 

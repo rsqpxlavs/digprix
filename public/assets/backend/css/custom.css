@@ -36,3 +36,13 @@
     visibility: visible;
     opacity: 1;
 }
+
+.passwd-copy-fld-tmp{
+    width: 114px;
+    border: none;
+    color: #3150ca;
+}
+.passwd-copy-fld-tmp:focus{
+    outline: none;
+}
+
