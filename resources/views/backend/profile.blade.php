@@ -156,11 +156,22 @@
 				<div class="col-md-5">
 					<div class="panel panel-default">
 						<div class="panel-heading panel-heading-divider">Change Password
-							<span class="panel-subtitle text-danger">*make sure to enter at least 8 character</span>
+							<span class="panel-subtitle text-info">*make sure to enter at least 8 character</span>
 						</div>
 						<div class="panel-body">
 
-							<div id="passwd"></div>
+							{{-- password update alert --}}
+							<div role="alert" class="alert alert-dark alert-success alert-dismissible">
+								<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Great Job!</strong> account password updated successfully
+							</div>
+
+							<form action="" method="post">
+								{{ csrf_field() }}
+
+								{{-- here comes react --}}
+								<div id="passwd"></div>
+								
+							</form>
 
 						</div>
 					</div>

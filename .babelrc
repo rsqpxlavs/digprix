@@ -1,0 +1,48 @@
+{
+    "env": {
+        "production": {
+            "plugins": [
+                "transform-remove-console",
+                "transform-remove-debugger",
+                "minify-simplify",
+                "transform-undefined-to-void"
+            ],
+            "presets": [
+                [
+                    "env",
+                    {
+                        "targets": {
+                            "browsers": [
+                                "> 1%",
+                                "last 2 versions"
+                            ]
+                        }
+                    }
+                ],
+                "stage-2",
+                "react"
+            ]
+        },
+        "development": {
+            "plugins": [
+                "syntax-dynamic-import",
+                "transform-react-jsx-source"
+            ],
+            "presets": [
+                [
+                    "env",
+                    {
+                        "targets": {
+                            "browsers": [
+                                "> 1%",
+                                "last 2 versions"
+                            ]
+                        }
+                    }
+                ],
+                "stage-2",
+                "react"
+            ]
+        }
+    }
+}

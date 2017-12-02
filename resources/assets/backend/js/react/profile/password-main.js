@@ -118,7 +118,7 @@ class PasswordFields extends Component {
 
     render() {
         return (
-            <form>
+            <div>
                 <FieldAndBtn theclassname="form-group row mt-4" placeholder="Your Current Password" onFieldValChange={this.valueChanged.bind(this, false)} />
 
                 <FieldAndBtn theclassname="form-group row" placeholder="Enter New password" onFieldValChange={this.valueChanged.bind(this,true)} />
@@ -155,7 +155,7 @@ class PasswordFields extends Component {
                     </div>
 
                 </div>
-			</form>
+            </div>
         );
     }
 }
