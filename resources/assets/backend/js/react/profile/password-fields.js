@@ -12,7 +12,7 @@ class FormInpFld extends Component {
     }
 
     render = () => {
-        const field = <input className="form-control" type={this.props.fieldtype} 
+        const field = <input className="form-control" type={this.props.fieldtype} name={this.props.fldName}
                             placeholder={this.props.placeholder}
                             onChange={this.handleValueChange} 
                             value={this.state.value} />

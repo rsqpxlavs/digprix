@@ -69,7 +69,7 @@ class FieldAndBtn extends Component{
         return (
             <div className={this.props.theclassname}>
                 <div className="col-10">
-                    <FormInpFld placeholder={this.props.placeholder} fieldtype={this.state.fieldType} onValueChange={this.fieldValChanged} />
+                    <FormInpFld placeholder={this.props.placeholder} fieldtype={this.state.fieldType} fldName={this.props.fieldName} onValueChange={this.fieldValChanged} />
                 </div>
                 <div className="col-2">
                     <EyeBtn onTogglePasswordShowClick={this.handleToggleEvent} />
@@ -119,11 +119,11 @@ class PasswordFields extends Component {
     render() {
         return (
             <div>
-                <FieldAndBtn theclassname="form-group row mt-4" placeholder="Your Current Password" onFieldValChange={this.valueChanged.bind(this, false)} />
+                <FieldAndBtn theclassname="form-group row mt-4" placeholder="Your Current Password" fieldName="curr_password" onFieldValChange={this.valueChanged.bind(this, false)} />
 
-                <FieldAndBtn theclassname="form-group row" placeholder="Enter New password" onFieldValChange={this.valueChanged.bind(this,true)} />
+                <FieldAndBtn theclassname="form-group row" placeholder="Enter New password" fieldName="password" onFieldValChange={this.valueChanged.bind(this,true)} />
 
-                <FieldAndBtn theclassname="form-group row mt-4" placeholder="Re-Enter New password" onFieldValChange={this.valueChanged.bind(this, false)} />
+                <FieldAndBtn theclassname="form-group row mt-4" placeholder="Re-Enter New password" fieldName="password_confirmation" onFieldValChange={this.valueChanged.bind(this, false)} />
 
                 <div className="row mt-4">
                     {this.state.newpasswdgenerated ?

@@ -5,8 +5,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use JavaScript;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\{Session, Hash};
 use Image;
+use Validator;
 
 class ProfileCtrl extends Controller
 {
@@ -137,6 +138,43 @@ class ProfileCtrl extends Controller
         //else image upload makes no sense
         admin_notify('gritter-color warning', 'Oops ! something went wrong', 'please try again image upload error');
         return redirect()->back();
+    }
+
+    /**
+     * update password & if success logout from all active sessions
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function UpdatePassword(Request $request)
+    {
+        //validation part
+        $validator = Validator::make($request->all(), [
+            'curr_password' => 'required|min:8',
+            'password'      => 'required|min:8|max:30|confirmed',
+            'password_confirmation' => 'required|min:8|max:30',
+        ]);
+
+        if ($validator->fails()) {
+            admin_notify('gritter-color warning', 'Validation failed', 'check your input and try again');
+            return redirect()->back()->withErrors($validator, 'password');
+        }
+
+
+        //check if current password is correct
+        if (Hash::check($request->input('curr_password'), Auth::user()->password)) 
+        {
+            //change the password
+            $admin = Auth::user();
+            $admin->password = Hash::make($request->input('password'));
+            $admin->save();
+
+            admin_notify('gritter-color info', 'Account Secured', 'your account password changed');
+            return redirect()->back()->with('password-updated', true);
+        }
+
+        //entered current password is incorrect
+        admin_notify('gritter-color danger', 'Error !', 'incorrect password');
+        return redirect()->back()->with('incorrect-currpasswd', true);
     }
 
 }

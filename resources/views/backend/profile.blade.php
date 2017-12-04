@@ -160,12 +160,35 @@
 						</div>
 						<div class="panel-body">
 
-							{{-- password update alert --}}
-							<div role="alert" class="alert alert-dark alert-success alert-dismissible">
-								<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Great Job!</strong> account password updated successfully
-							</div>
+							{{-- password update/incorrect alert --}}
+							@if(session('password-updated'))
+								<div role="alert" class="alert alert-dark alert-success alert-dismissible">
+									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Great Job!</strong> account password updated successfully
+								</div>
+							@elseif(session('incorrect-currpasswd'))
+								<div role="alert" class="alert alert-contrast alert-danger alert-dismissible">
+									<div class="icon"><span class="s7-close"></span></div>
+									<div class="message">
+										<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><strong>Error!</strong> incorrect current password entered
+									</div>
+								</div>
+							@endif
 
-							<form action="" method="post">
+							{{-- validation errors --}}
+							@if ($errors->password->any())
+								<div role="alert" class="alert alert-cream alert-warning alert-dismissible">
+									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-attention"></span>
+									<strong>Validation Error!</strong> check your input properly
+									<ul>
+										@foreach ($errors->password->all() as $error)
+											<li>{{ $error }}</li>
+										@endforeach
+									</ul>
+								</div>
+							@endif
+
+
+							<form action="{{ route('admin.update.password') }}" method="post">
 								{{ csrf_field() }}
 
 								{{-- here comes react --}}
