@@ -111,38 +111,78 @@
 					<div class="panel panel-default">
 						<div class="panel-heading panel-heading-divider">Personal Details<span class="panel-subtitle">set username & mobile no., you may login via them too</span></div>
 						<div class="panel-body">
-							<form>
+							@if(session('profile-updated'))
+								<div role="alert" class="alert alert-cream alert-success alert-dismissible">
+									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Updated !</strong> profile data updated successfully, looks all good
+								</div>
+							@elseif($errors->profile->any())
+								<div role="alert" class="alert alert-cream alert-warning alert-dismissible">
+									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-attention"></span><strong>Validation Error!</strong> check your input and try again
+								</div>
+							@endif
+
+							<form action="{{ route('admin.update.profile') }}" method="post">
+								{{ csrf_field() }}
 								
-								<div class="form-group mt-1">
+								<div class="form-group mt-1 {{ $errors->profile->has('first_name')? 'has-danger' : '' }}">
 									<label>First Name *</label>
-									<input type="text" placeholder="Enter first name" class="form-control">
+									<input type="text" placeholder="Enter first name" name="first_name" value="{{ Auth()->user()->fname }}" class="form-control">
+									
+									@if($errors->profile->has('first_name'))
+									<small class="form-control-feedback text-danger">
+										{{ $errors->profile->first('first_name') }}
+									</small>
+									@endif
 								</div>
 
-								<div class="form-group mt-1">
+								<div class="form-group mt-1 {{ $errors->profile->has('last_name')? 'has-danger' : '' }}">
 									<label>Last Name</label>
-									<input type="text" placeholder="Enter last name" class="form-control">
+									<input type="text" placeholder="Enter last name" name="last_name" value="{{ Auth()->user()->lname }}" class="form-control">
+
+									@if($errors->profile->has('last_name'))
+									<small class="form-control-feedback text-danger">
+										{{ $errors->profile->first('last_name') }}
+									</small>
+									@endif
 								</div>
 
-								<div class="form-group mt-1">
+								<div class="form-group mt-1 {{ $errors->profile->has('email')? 'has-danger' : '' }}">
 									<label>Email ID *</label>
-									<input type="email" placeholder="Enter email" class="form-control">
+									<input type="email" placeholder="Enter email" name="email" value="{{ Auth()->user()->email }}" class="form-control">
+
+									@if($errors->profile->has('email'))
+									<small class="form-control-feedback text-danger">
+										{{ $errors->profile->first('email') }}
+									</small>
+									@endif
 								</div>
 
-								<div class="input-group mb-2">
+								<div class="input-group mb-2 {{ $errors->profile->has('username')? 'has-danger has-feedback' : '' }}">
 									<span class="input-group-addon">@</span>
-									<input type="text" placeholder="Username" class="form-control">
+									<input type="text" placeholder="Username" name="username" value="{{ Auth()->user()->username }}" class="form-control {{ $errors->profile->has('username')? 'form-control-danger' : '' }}">
 								</div>
+								@if($errors->profile->has('username'))
+								<small class="form-control-feedback text-danger">
+									{{ $errors->profile->first('username') }}
+								</small>
+								@endif
 
-								<div class="form-group mt-1">
+								<div class="form-group mt-1 {{ $errors->profile->has('mobile')? 'has-danger' : '' }}">
 									<label>Mobile</label>
-									<input type="text" placeholder="Enter mobile no." class="form-control">
+									<input type="text" placeholder="Enter mobile no." name="mobile" value="{{ Auth()->user()->mobile }}" class="form-control">
+								
+									@if($errors->profile->has('mobile'))
+									<small class="form-control-feedback text-danger">
+										{{ $errors->profile->first('mobile') }}
+									</small>
+									@endif
 								</div>
 
 								<div class="row pt-5">
 									<div class="col-6">
 										<p class="text-left">
 											<button type="submit" class="btn btn-space btn-primary">Update Profile</button>
-											<button class="btn btn-space btn-secondary" type="button">Cancel</button>
+											<a href="{{ route('admin.dashboard') }}" class="btn btn-space btn-secondary">Cancel</a>
 										</p>
 									</div>
 									<div class="clearfix"></div>

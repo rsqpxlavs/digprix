@@ -8,6 +8,7 @@ use JavaScript;
 use Illuminate\Support\Facades\{Session, Hash};
 use Image;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileCtrl extends Controller
 {
@@ -175,6 +176,38 @@ class ProfileCtrl extends Controller
         //entered current password is incorrect
         admin_notify('gritter-color danger', 'Error !', 'incorrect password');
         return redirect()->back()->with('incorrect-currpasswd', true);
+    }
+
+    /**
+     * update profile details
+     */
+    public function UpdateProfile(Request $request)
+    {
+        //validation part
+        $validator = Validator::make($request->all(), [
+            'first_name'    => 'required|alpha_num|min:3|max:255',
+            'last_name'     => 'nullable|alpha_num|max:255',
+            'email'         => ['required', 'email', Rule::unique('admins')->ignore(Auth::user()->id)],
+            'username'      => ['nullable', 'alpha_num', 'min:6', 'max:10', Rule::unique('admins')->ignore(Auth::user()->id)],
+            'mobile'        => ['nullable', 'regex:/^[^0-6][0-9]{9}$/', Rule::unique('admins')->ignore(Auth::user()->id)],
+        ]);
+
+        if ($validator->fails()) {
+            admin_notify('gritter-color warning', 'Validation failed', 'check your input and try again');
+            return redirect()->back()->withErrors($validator, 'profile');
+        }
+
+        //update profile
+        Auth::user()->update([
+            'fname' => $request->input('first_name'),
+            'lname' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'username' => $request->input('username', null),
+            'mobile' => $request->input('mobile', null),
+        ]);
+
+        admin_notify('gritter-color info', 'Success !', 'your profile details updated successfully');
+        return redirect()->back()->with('profile-updated', true);
     }
 
 }

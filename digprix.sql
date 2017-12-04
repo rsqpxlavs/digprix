@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2017 at 09:23 PM
+-- Generation Time: Dec 04, 2017 at 03:13 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.11
 
@@ -49,7 +49,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'Rakshit', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '121212', '$2y$10$si1r5XEvG7H8FWhKf6nSr.ji5dgbZte2Jb5p1qhJg3rXywNZr/Wi2', 'd6BBeWuDgEVhajDoKStej3U5PNYevHIoFJ0zzlMl6hybyeOByHxHxtGC3g7A', 1, 1, '2017-10-17 09:49:29', '2017-11-28 14:51:53');
+(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', '6yvyBMaRmV82jXkO3P1e3VxPKZ7envwEdWJrqiD4RHKNFuUNNJNyCquLtbST', 1, 1, '2017-10-17 09:49:29', '2017-12-04 08:42:27'),
+(2, 'sourav2', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', NULL, '$2y$10$I1SAR6aje6zAhem.QGgfbu4Y.WtwRQZmMC3lw9NIWPJzkENb16l4W', NULL, 0, 1, '2017-12-04 08:32:11', '2017-12-04 08:32:11');
 
 -- --------------------------------------------------------
 
@@ -213,7 +214,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

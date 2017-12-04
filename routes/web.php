@@ -72,6 +72,7 @@ Route::prefix('admin')->group(function() {
         Route::post('/profile/remove/tmp-profile', 'ProfileCtrl@RemoveInitialAjaxTmpPicture')->name('admin.remove.tmp-profile-pic');
         Route::post('/profile/upload/cropped', 'ProfileCtrl@UploadAfterCropping')->name('admin.upload.cropped-profile-pic');
         Route::post('/profile/update/password', 'ProfileCtrl@UpdatePassword')->name('admin.update.password'); //logout the user from all active devices & sessions
+        Route::post('/profile/update/personal-details', 'ProfileCtrl@UpdateProfile')->name('admin.update.profile');
 
 
     });
