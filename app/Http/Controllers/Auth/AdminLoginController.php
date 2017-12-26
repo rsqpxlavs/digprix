@@ -58,11 +58,11 @@ class AdminLoginController extends Controller
         // Attempt to log the user in
 
         //check the username field input type [username or email or mobile]
-        if(Admin::where('email', $request->username)->count() > 0)
+        if(Admin::where('email', $request->username)->exists())
         {
             $field_type = 'email';
         }
-        else if(Admin::where('username', $request->username)->count() > 0)
+        else if(Admin::where('username', $request->username)->exists())
         {
             $field_type = 'username';
         }
