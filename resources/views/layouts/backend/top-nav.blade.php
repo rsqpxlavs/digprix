@@ -115,8 +115,8 @@
                     <span class="angle-down s7-angle-down"></span>
                 </a>
                 <div role="menu" class="dropdown-menu">
-                    <a href="#" class="dropdown-item"> 
-                        <span class="icon s7-home"> </span>My Account
+                    <a href="{{ route('admin.account') }}" class="dropdown-item"> 
+                        <span class="icon s7-config"> </span>My Account
                     </a>
                     <a href="{{ route('admin.profile') }}" class="dropdown-item"> 
                         <span class="icon s7-user"> </span>Profile

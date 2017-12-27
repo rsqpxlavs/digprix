@@ -67,6 +67,7 @@ Route::prefix('admin')->group(function() {
     Route::group(['namespace' => 'Backend', 'middleware' => 'auth:admin'], function () {
         
         Route::get('/', 'AdminController@index')->name('admin.dashboard');
+
         Route::get('/profile', 'ProfileCtrl@Visit')->name('admin.profile');
         Route::post('/profile/upload/tmp-profile', 'ProfileCtrl@UploadInitialAjaxTmpPicture')->name('admin.upload.tmp-profile-pic');
         Route::post('/profile/remove/tmp-profile', 'ProfileCtrl@RemoveInitialAjaxTmpPicture')->name('admin.remove.tmp-profile-pic');
@@ -74,6 +75,8 @@ Route::prefix('admin')->group(function() {
         Route::post('/profile/update/password', 'ProfileCtrl@UpdatePassword')->name('admin.update.password'); //logout the user from all active devices & sessions
         Route::post('/profile/update/personal-details', 'ProfileCtrl@UpdateProfile')->name('admin.update.profile');
 
+        Route::get('/account', 'AccountPage@Visit')->name('admin.account');
+        Route::post('/account/secure', 'AccountPage@SecureAccount')->name('admin.secure.account');
 
     });
 

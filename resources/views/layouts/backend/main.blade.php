@@ -17,6 +17,20 @@
         <link rel="stylesheet" href="{{ asset( 'assets/backend/css/custom.css' )}}" type="text/css"/>
         <link rel="stylesheet" href="{{ asset( 'assets/backend/css/app.css' )}}" type="text/css"/>
 
+        {{-- Laravel Echo init --}}
+        <script type="text/javascript" src="{{ asset('assets/backend/js/custom/init-broadcasting.js') }}"></script>
+        
+        {{-- check for user logout from all device broadcast --}}
+        <script type="text/javascript">
+            document.onreadystatechange = () => {
+                if (document.readyState === 'complete') {
+                    Echo.private('logout-from-all.{{Auth::user()->id}}').listen('.secure.account', function (e) {
+                        console.log(e);
+                    });
+                }
+            };
+        </script>
+
         @stack('styles')
     </head>
 

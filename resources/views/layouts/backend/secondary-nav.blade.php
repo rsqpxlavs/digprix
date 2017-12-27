@@ -113,9 +113,16 @@
                                   </li>
                       </ul>
                     </li>
-                    <li class="nav-item parent {{ return_if(on_route('admin.profile'), 'open') }}">
+                    <li class="nav-item parent {{ return_if(on_route('admin.profile') || on_route('admin.account'), 'open') }}">
                         <a href="#" role="button" aria-expanded="false" class="nav-link"><span class="icon s7-tools"></span><span>Settings</span></a>
                         <ul class="mai-nav-tabs-sub mai-sub-nav nav">
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.account') }}" class="nav-link {{ return_if(on_route('admin.account'), 'active') }}">
+                                    <span class="icon s7-config"></span>
+                                    <span class="name">My Account</span>
+                                </a>
+                            </li>
 
                             <li class="nav-item">
                                 <a href="{{ route('admin.profile') }}" class="nav-link {{ return_if(on_route('admin.profile'), 'active') }}">
