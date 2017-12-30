@@ -64,7 +64,7 @@ Route::prefix('admin')->group(function() {
     */
 
     // Controllers Within The "App\Http\Controllers\Backend" Namespace
-    Route::group(['namespace' => 'Backend', 'middleware' => 'auth:admin'], function () {
+    Route::group(['namespace' => 'Backend', 'middleware' => ['auth:admin', 'is.session.active']], function () {
         
         Route::get('/', 'AdminController@index')->name('admin.dashboard');
 

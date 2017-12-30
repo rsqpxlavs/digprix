@@ -1,11 +1,18 @@
 import axios from 'axios';
 
-document.getElementById('secure-acc').addEventListener('click', function(){
+import NProgress from 'nprogress';
+import '../../../../../../public/assets/backend/lib/nprogress/nprogress.css';
+
+document.getElementById('secure-acc').addEventListener('click', function(e){
+    e.target.setAttribute('disabled', 'disabled');
+    NProgress.set(0.4);
+    NProgress.inc();
+
     axios.post(`${window.trans._hitSecureMyAcc}`, {
         secure: 1
     }).then((response) => {
         if (response.data.secure == 1){
-            console.log('all set now redirect to admin login');
+            window.location.reload();
         }
         else{
             $.gritter.add({

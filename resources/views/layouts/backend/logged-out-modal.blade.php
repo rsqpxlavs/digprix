@@ -14,7 +14,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" data-dismiss="modal" class="btn btn-link btn-link-secondary">Cancel</button>
-            <a href="{{ route('admin.login') }}" class="btn btn-link btn-link-danger">Proceed</a>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-link btn-link-danger">Proceed</a>
         </div>
         </div>
     </div>

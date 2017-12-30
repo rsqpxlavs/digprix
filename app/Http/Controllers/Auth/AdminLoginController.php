@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Auth;
 use App\Admin;
 use JavaScript;
+use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class AdminLoginController extends Controller
 {
@@ -73,6 +75,9 @@ class AdminLoginController extends Controller
 
         if (Auth::guard('admin')->attempt([$field_type => $request->username, 'password' => $request->password, 'active' => 1], $request->remember)) {
             // if successful, then redirect to their intended location
+
+            //store the login time in session
+            Session::put('logged_in_at', Carbon::now());
 
             //here returning the uri to redirect as it is being processed by ajax
             return response()->json([
