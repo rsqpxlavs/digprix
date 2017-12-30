@@ -1,4 +1,4 @@
-# AUTH #
+# TECH SPECIFICATIONS #
 
 Using **Multi-authentication** [ customer/user & admin ]
 
@@ -40,7 +40,9 @@ file path: \app\Myhelper\\**CustomHelpers.php**
 
 ## Admin Profile Page: ##
 
-**jcrop** implemented for profile pic upload & crop <br>
+**Jcrop** implemented for profile pic upload & crop <br>
+
+the `assets\backend\img\profile\tmp` dir. is used to store the initial profile picture then with the help of **Jcrop** & **Intervention** the picture is cropped & stored in `assets\backend\img\profile` and removed from the `tmp` dir.
 
 ReactJS for password update section random password generate & clipboard events
 
@@ -58,5 +60,10 @@ using *Laravel Echo* with *pusher* <br>
 
 1. log me out of all devices for admins [ My Account page ]
 2. admin main layout is initializing the broadcasting with pusher
-3. all the admin pages will look for logout from all sessions via echo
-[check **main.blade.php**]
+3. all the admin pages will look for logout from all sessions via echo [check **main.blade.php**]
+4. `Events\backend\account\LogoutFromAllDevices` event is used for broadcasting the logout from all sessions
+5. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
+
+
+## Blank Admin Page Template: ##
+    blank.blade.php
