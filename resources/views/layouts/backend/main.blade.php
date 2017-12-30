@@ -25,7 +25,8 @@
             document.onreadystatechange = () => {
                 if (document.readyState === 'complete') {
                     Echo.private('logout-from-all.{{Auth::user()->id}}').listen('.secure.account', function (e) {
-                        console.log(e);
+                        // console.log(e);
+                        $("#session-not-available-modal").modal('show');
                     });
                 }
             };
@@ -44,6 +45,9 @@
             @yield('contents')
 
         </div>
+
+        {{-- session out modal --}}
+        @include('layouts.backend.logged-out-modal')
 
         <script src="{{ asset( 'assets/backend/lib/jquery/jquery.min.js' )}}" type="text/javascript"></script>
         <script src="{{ asset( 'assets/backend/lib/tether/js/tether.min.js' )}}" type="text/javascript"></script>

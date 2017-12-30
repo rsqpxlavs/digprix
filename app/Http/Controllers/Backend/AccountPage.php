@@ -25,6 +25,16 @@ class AccountPage extends Controller
      */
     public function SecureAccount(Request $request)
     {
-        broadcast(new LogoutFromAllDevices(Auth::user()->id));
+        $request->validate([
+            'secure' => 'required|boolean'
+        ]);
+
+        if($request->input('secure'))
+        {
+            broadcast(new LogoutFromAllDevices(Auth::user()->id));
+            return response()->json(['secure' => 1]);
+        }
+
+        return response()->json(['secure' => 0]);
     }
 }
