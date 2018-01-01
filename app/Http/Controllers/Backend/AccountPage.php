@@ -20,7 +20,9 @@ class AccountPage extends Controller
             '_hitSecureMyAcc' => route('admin.secure.account')
         ]);
 
-        return view('backend.account');
+        $admin = Admin::findOrFail(Auth::user()->id);    
+
+        return view('backend.account', ['history' => $admin->loginhistory()->latest()->paginate(5)]);
     }
     
     /**

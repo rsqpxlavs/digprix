@@ -22,54 +22,62 @@
                 <div class="panel-heading">
                     Review recent device and security-related activities on your account
                     <p>Recently used devices</p>
-                    <div class="tools">
-                        <span class="icon s7-cloud-download"></span><span class="icon s7-edit"></span>
-                    </div>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-borderless">
                     <thead>
                         <tr>
-                        <th style="width:50%;">Name</th>
-                        <th style="width:10%;">Date</th>
-                        <th class="number">Rate</th>
-                        <th class="number">Sales</th>
-                        <th class="actions"></th>
+                            <th style="width:37%;">User Agent</th>
+                            <th>Platform</th>
+                            <th>Ip Address</th>
+                            <th>Browser</th>
+                            <th>Device Model</th>
+                            <th style="width:17%;">Login Time</th>
                         </tr>
                     </thead>
                     <tbody class="no-border-x">
+                        @foreach($history as $record)
                         <tr>
-                        <td>Ryan Lawrence</td>
-                        <td>23/06/2016</td>
-                        <td class="number">60%</td>
-                        <td class="number">639</td>
-                        <td class="actions"><a href="#" class="icon"><i class="s7-trash"></i></a></td>
+                            <td>{{ $record->user_agent }}</td>
+                            <td>
+                                @if($record->isMobile)
+                                    <i class="fa fa-mobile" aria-hidden="true"></i> Mobile
+                                @elseif($record->isTablet)
+                                    <i class="fa fa-tablet" aria-hidden="true"></i> Tablet
+                                @elseif($record->isDesktop)
+                                    <i class="fa fa-desktop" aria-hidden="true"></i> PC
+                                @else
+                                    <i class="fa fa-user-secret" aria-hidden="true"></i> Bot
+                                @endif
+
+                                - {{ $record->platform }}
+                            </td>
+                            <td>{{ $record->ip }}</td>
+                            <td>
+                                @if($record->isChrome)
+                                    <i class="fa fa-chrome" aria-hidden="true"></i>
+                                @elseif($record->isFirefox)
+                                    <i class="fa fa-firefox" aria-hidden="true"></i>
+                                @elseif($record->isOpera)
+                                    <i class="fa fa-opera" aria-hidden="true"></i>
+                                @elseif($record->isSafari)
+                                    <i class="fa fa-safari" aria-hidden="true"></i>
+                                @elseif($record->isIE)
+                                    <i class="fa fa-internet-explorer" aria-hidden="true"></i>
+                                @endif
+
+                                {{ $record->browser }}
+                            </td>
+                            <td>{{ empty($record->device_model)? 'NA' : $record->device_model }}</td>
+                            <td>{{ $record->created_at }}</td>
                         </tr>
-                        <tr>
-                        <td>Benji Miller</td>
-                        <td>15/05/2016</td>
-                        <td class="number">23%</td>
-                        <td class="number">235</td>
-                        <td class="actions"><a href="#" class="icon"><i class="s7-trash"></i></a></td>
-                        </tr>
-                        <tr>
-                        <td>Justin Adams</td>
-                        <td>10/03/2016</td>
-                        <td class="number">79%</td>
-                        <td class="number">728</td>
-                        <td class="actions"><a href="#" class="icon"><i class="s7-trash"></i></a></td>
-                        </tr>
-                        <tr>
-                        <td>Brett Harris</td>
-                        <td>18/01/2016</td>
-                        <td class="number">18%</td>
-                        <td class="number">135</td>
-                        <td class="actions"><a href="#" class="icon"><i class="s7-trash"></i></a></td>
-                        </tr>
+                        @endforeach
                     </tbody>
                     </table>
                 </div>
                 </div>
+
+                {{$history->links('vendor.pagination.bootstrap-4')}}
             </div>
         </div>
 
@@ -78,8 +86,9 @@
             <div class="panel">
               <div class="panel-heading panel-heading-color panel-heading-color-dark"><span class="title">Secure your account</span><span class="panel-subtitle">anything suspicious!</span></div>
               <div class="panel-body">
-                <p> Quisque gravida aliquam diam at cursus, quisque laoreet ac lectus a rhoncusac tempus odio. </p>
-                <p>Aliquam posuere volutpat turpis, ut euimod diam pellentesque at. Sed sit amet nulla a dui dignisim euismod. Morbi luctus elementum dictum. Donec convallis mattis elit id varius. Quisque facilisis sapien quis mauris,, erat condimentum.</p>
+                <p> If aytime you feel your account is not secure </p>
+                <p>Change your account password immediately which will automatically remove all the active sessions of your account too.</p>
+                <p>Otherwise you may manually flush all your devices' sessions by clicking the below button.</p>
                 <p><button class="btn btn-primary" id="secure-acc"><i class="icon icon-left s7-lock"></i> Log me out of all devices</button></p>
               </div>
             </div>

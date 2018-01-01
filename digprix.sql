@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2017 at 04:37 PM
+-- Generation Time: Jan 01, 2018 at 02:08 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.11
 
@@ -50,8 +50,48 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `purge_sessions`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'hAScTwI2WULd6Le2MZqiWlBHiSbPUB3TjODkbZJP24a1OH4wTgefACYY2RL5', 1, '2017-12-30 10:04:45', 1, '2017-10-17 09:49:29', '2017-12-30 10:04:45'),
-(2, 'sourav2', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', NULL, '$2y$10$I1SAR6aje6zAhem.QGgfbu4Y.WtwRQZmMC3lw9NIWPJzkENb16l4W', 'uy3rxE3D8xwvH2om1Dn0L2L09ACgshmqDH0cWAitZ6xQ4bZLYVh1f37gS47A', 0, '2017-12-30 10:03:12', 1, '2017-12-04 08:32:11', '2017-12-30 10:03:12');
+(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'TwOVfkRvqxjn0RBplQljhmcC0KMkh50tM5GurxnTEkqPL4dDmPUGCNm2eQZC', 1, '2017-12-30 10:04:45', 1, '2017-10-17 09:49:29', '2017-12-30 10:04:45'),
+(2, 'sourav2', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', NULL, '$2y$10$I1SAR6aje6zAhem.QGgfbu4Y.WtwRQZmMC3lw9NIWPJzkENb16l4W', 'fkwMYaX5fuCy7YhoAGSZ4QJfSWMMjZgBdyTocCWuXQvQgAZqjx8G6FfLBePE', 0, '2017-12-30 10:03:12', 1, '2017-12-04 08:32:11', '2017-12-30 10:03:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_login_history`
+--
+
+CREATE TABLE `admin_login_history` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `ip` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isMobile` tinyint(1) NOT NULL,
+  `isTablet` tinyint(1) NOT NULL,
+  `isDesktop` tinyint(1) NOT NULL,
+  `isBot` tinyint(1) NOT NULL,
+  `isChrome` tinyint(1) NOT NULL,
+  `isFirefox` tinyint(1) NOT NULL,
+  `isOpera` tinyint(1) NOT NULL,
+  `isSafari` tinyint(1) NOT NULL,
+  `isIE` tinyint(1) NOT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `browser` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `platform` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `device_model` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admin_login_history`
+--
+
+INSERT INTO `admin_login_history` (`id`, `admin_id`, `ip`, `isMobile`, `isTablet`, `isDesktop`, `isBot`, `isChrome`, `isFirefox`, `isOpera`, `isSafari`, `isIE`, `user_agent`, `browser`, `platform`, `device_model`, `created_at`, `updated_at`) VALUES
+(1, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-01 06:19:06', '2018-01-01 06:19:06'),
+(2, 2, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0', 'Firefox 57', 'Windows 10', '', '2018-01-01 06:21:05', '2018-01-01 06:21:05'),
+(3, 1, '127.0.0.1', 1, 0, 0, 0, 0, 0, 0, 0, 0, 'Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30', 'Android Browser 4.0.2', 'Android 4.0.2', 'Galaxy Nexus', '2018-01-01 06:55:51', '2018-01-01 06:55:51'),
+(4, 1, '127.0.0.1', 0, 1, 0, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JSS15Q) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Android 4.3', 'Nexus 7', '2018-01-01 06:57:57', '2018-01-01 06:57:57'),
+(5, 1, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0', 'Firefox 57', 'Windows 10', '', '2018-01-01 07:13:17', '2018-01-01 07:13:17'),
+(6, 1, '127.0.0.1', 0, 0, 1, 0, 0, 0, 0, 0, 1, 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko', 'Internet Explorer 11', 'Windows 10', '', '2018-01-01 07:15:44', '2018-01-01 07:15:44'),
+(7, 1, '127.0.0.1', 0, 0, 1, 0, 0, 0, 1, 0, 0, 'Opera/9.80 (Macintosh; Intel Mac OS X 10.9.1) Presto/2.12.388 Version/12.16', 'Opera 12.16', 'Mac 10.9.1', '', '2018-01-01 07:16:37', '2018-01-01 07:16:37');
 
 -- --------------------------------------------------------
 
@@ -121,7 +161,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2017_10_17_095244_create_admin_password_resets_table', 4),
 (7, '2017_10_24_141511_admins_table_add_mobile_col', 5),
 (8, '2017_11_06_192932_admins_table_break_name_col_to_fname_lname', 6),
-(10, '2017_12_30_132512_add_purge_sessions_col_to_admins_table', 7);
+(10, '2017_12_30_132512_add_purge_sessions_col_to_admins_table', 7),
+(12, '2018_01_01_110822_create_admin_login_history', 8);
 
 -- --------------------------------------------------------
 
@@ -169,6 +210,12 @@ ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `admins_email_unique` (`email`),
   ADD UNIQUE KEY `admins_username_unique` (`username`);
+
+--
+-- Indexes for table `admin_login_history`
+--
+ALTER TABLE `admin_login_history`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `admin_password_resets`
@@ -219,6 +266,12 @@ ALTER TABLE `admins`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `admin_login_history`
+--
+ALTER TABLE `admin_login_history`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -234,7 +287,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`

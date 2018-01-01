@@ -39,4 +39,12 @@ class Admin extends Authenticatable
     {
         return $query->where('active', 1);
     }
+
+    /**
+     * admin has many login history records
+     */
+    public function loginhistory()
+    {
+        return $this->hasMany('App\EloquentModels\Backend\AdminLoginHistory', 'admin_id');
+    }
 }
