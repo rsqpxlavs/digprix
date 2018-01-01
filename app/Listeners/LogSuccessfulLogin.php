@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Facades\Request;
 use App\EloquentModels\Backend\AdminLoginHistory;
-use App\Admin;
+use App\{Admin, User};
 use hisorange\BrowserDetect\Facade as Browser;
 
 class LogSuccessfulLogin
@@ -65,7 +65,28 @@ class LogSuccessfulLogin
 
                     break;
                 case "App\User":
-                    Log::info('User loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
+                    //Log::info('User loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
+
+                    //store the login data
+                    $user = User::find($user->user->id);
+
+                    $user->loginhistory()->create([
+                        'ip' => Request::ip(),
+                        'isMobile' => $device->isMobile(),
+                        'isTablet' => $device->isTablet(),
+                        'isDesktop' => $device->isDesktop(),
+                        'isBot' => $device->isBot(),
+                        'isChrome' => $device->isChrome(),
+                        'isFirefox' => $device->isFirefox(),
+                        'isOpera' => $device->isOpera(),
+                        'isSafari' => $device->isSafari(),
+                        'isIE' => $device->isIE(),
+                        'user_agent' => $device->userAgent(),
+                        'browser' => $device->browserName(),
+                        'platform' => $device->platformName(),
+                        'device_model' => $device->deviceModel(),
+                    ]);
+
                     break;
                 default:
                     Log::info('New login with undetected user type- Email: ->'. $user->user->email .', ID -> '. $user->user->id);

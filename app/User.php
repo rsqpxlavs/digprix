@@ -36,4 +36,12 @@ class User extends Authenticatable
     {
         $this->notify(new UserResetPasswordMail($token));
     }
+
+    /**
+     * user has many login history records
+     */
+    public function loginhistory()
+    {
+        return $this->hasMany('App\EloquentModels\Frontend\UserLoginHistory', 'user_id');
+    }
 }
