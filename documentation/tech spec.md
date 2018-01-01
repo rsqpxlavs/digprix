@@ -58,12 +58,22 @@ using custom babel config, can be found on the root dir
 
 using *Laravel Echo* with *pusher* <br>
 
-1. log me out of all devices for admins [ My Account page ]
+1. log me out of all devices for admins [ My Account page + password change auto trigger flush sessions ]
 2. admin main layout is initializing the broadcasting with pusher
 3. all the admin pages will look for logout from all sessions via echo [check **main.blade.php**]
-4. `Events\backend\account\LogoutFromAllDevices` event is used for broadcasting the logout from all sessions
-5. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
+4. `App\Http\CustomClasses\FlushAllSessions\SecureAccount` **interface** & `App\Http\CustomClasses\FlushAllSessions\FlushSessions` **class** created to execute logout from all devices/sessions
+5. `Events\backend\account\LogoutFromAllDevices` event is used for broadcasting the logout from all sessions
+6. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
+
+## Device Login History Tracking: ##
+`hisorange/browser-detect` is used to detect device data, ip etc.
 
 
 ## Blank Admin Page Template: ##
     blank.blade.php
+
+## Folder & Files Structure ##
+
+- All Eloquent Models are located inside `App\EloquentModels`
+- Custom class & interfaces located in `App\Http\CustomClasses`
+- Custom helper located in `App\MyHelper\CustomHelpers.php`

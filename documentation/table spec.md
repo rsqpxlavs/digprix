@@ -10,3 +10,9 @@
 
 ##users
 - customer acc details
+
+## user\_login\_history & admin\_login\_history
+
+- login history about device, browser, ip etc. with the help of `hisorange/browser-detect`
+- user has many history
+- admin has many history
