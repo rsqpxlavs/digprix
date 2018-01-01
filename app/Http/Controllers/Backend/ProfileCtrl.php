@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\{Session, Hash};
 use Image;
 use Validator;
 use Illuminate\Validation\Rule;
+use App\Http\CustomClasses\FlushAllSessions\FlushSessions;
 
 class ProfileCtrl extends Controller
 {
@@ -169,8 +170,13 @@ class ProfileCtrl extends Controller
             $admin->password = Hash::make($request->input('password'));
             $admin->save();
 
-            admin_notify('gritter-color info', 'Account Secured', 'your account password changed');
-            return redirect()->back()->with('password-updated', true);
+            //flush all active device sessions
+            $flush = new FlushSessions(Auth::user()->id, Auth::user(), 'admin');
+            $flush->secureAccount();
+            
+            /*admin_notify('gritter-color info', 'Account Secured', 'your account password changed');
+            return redirect()->back()->with('password-updated', true);*/
+            return redirect()->route('admin.login', ['password-channged' => 1]);
         }
 
         //entered current password is incorrect

@@ -12,7 +12,11 @@
 @section( 'contents' )
 
     <div class="col-sm-6 user-message">
-        <span class="splash-message text-right">Hello!<br> is good to<br> see you again</span>
+        @if(request('password-channged') == 1)
+            <span class="splash-message text-right">Password Changed Successfully!<br> Login again to continue</span>
+        @else
+            <span class="splash-message text-right">Hello!<br> is good to<br> see you again</span>
+        @endif
         <span class="alternative-message text-right"><< take me back to {{ env('APP_NAME') }} - <a href="{{ url('/') }}">click here</a></span>
     </div>
 
