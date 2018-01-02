@@ -3,7 +3,7 @@
 @section( 'seo' )
 
 	@component('components.backend.seo')
-			Manage Profile | {{ env('APP_NAME') }} - Admin
+			Manage Profile | {{ config('app.name') }} - Admin
 	@endcomponent
 
 @stop

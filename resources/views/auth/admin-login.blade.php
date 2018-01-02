@@ -3,7 +3,7 @@
 @section( 'seo' )
 
 @component('components.backend.seo')
-    {{ env('APP_NAME') }} - Admin Login
+    {{ config('app.name') }} - Admin Login
 @endcomponent
 
 @stop
@@ -17,7 +17,7 @@
         @else
             <span class="splash-message text-right">Hello!<br> is good to<br> see you again</span>
         @endif
-        <span class="alternative-message text-right"><< take me back to {{ env('APP_NAME') }} - <a href="{{ url('/') }}">click here</a></span>
+        <span class="alternative-message text-right"><< take me back to {{ config('app.name') }} - <a href="{{ url('/') }}">click here</a></span>
     </div>
 
     <div class="col-sm-6 form-message">
@@ -25,7 +25,7 @@
 
         <div id="Login-module"></div>
 
-        <div class="out-links"><a href="{{ url('/') }}" target="_blank">© {{ date('Y') }} {{ env('APP_NAME') }}</a></div>
+        <div class="out-links"><a href="{{ url('/') }}" target="_blank">© {{ date('Y') }} {{ config('app.name') }}</a></div>
     </div>
 
 @stop

@@ -3,7 +3,7 @@
 @section( 'seo' )
 
 @component('components.backend.seo')
-    {{ env('APP_NAME') }} - Admin Forgot Password
+    {{ config('app.name') }} - Admin Forgot Password
 @endcomponent
 
 @stop
@@ -50,7 +50,7 @@
             </div>
         </form>
 
-        <div class="out-links"><a href="{{ url('/') }}" target="_blank">© {{ date('Y') }} {{ env('APP_NAME') }}</a></div>
+        <div class="out-links"><a href="{{ url('/') }}" target="_blank">© {{ date('Y') }} {{ config('app.name') }}</a></div>
     </div>
 
 @stop

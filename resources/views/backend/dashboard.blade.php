@@ -3,7 +3,7 @@
 @section( 'seo' )
 
 	@component('components.backend.seo')
-	    {{ env('APP_NAME') }} - Admin Dashboard
+	    {{ config('app.name') }} - Admin Dashboard
 	@endcomponent
 
 @stop
