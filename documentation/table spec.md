@@ -16,3 +16,6 @@
 - login history about device, browser, ip etc. with the help of `hisorange/browser-detect`
 - user has many history
 - admin has many history
+
+## admin_roles ##
+holds predefined 3 roles for admin level users, role is mapped directly into the admins table as role_id can be access from admin instance by relation - `accesslevel`

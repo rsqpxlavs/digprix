@@ -77,3 +77,7 @@ using *Laravel Echo* with *pusher* <br>
 - All Eloquent Models are located inside `App\EloquentModels`
 - Custom class & interfaces located in `App\Http\CustomClasses`
 - Custom helper located in `App\MyHelper\CustomHelpers.php`
+
+## Authorizations ##
+
+1. `manage_admin_accounts` gate only allows admin & super admin to manage admin accounts
