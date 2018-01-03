@@ -47,4 +47,12 @@ class Admin extends Authenticatable
     {
         return $this->hasMany('App\EloquentModels\Backend\AdminLoginHistory', 'admin_id');
     }
+
+    /**
+     * has one role
+     */
+    public function role()
+    {
+        return $this->hasOne('App\EloquentModels\Backend\AdminRoles', 'id', 'role_id');
+    }
 }
