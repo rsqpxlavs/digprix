@@ -51,7 +51,7 @@ class Admin extends Authenticatable
     /**
      * has one role
      */
-    public function role()
+    public function accesslevel()
     {
         return $this->hasOne('App\EloquentModels\Backend\AdminRoles', 'id', 'role_id');
     }

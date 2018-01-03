@@ -131,6 +131,16 @@
                                 </a>
                             </li>
 
+                            @can('manage_admin_accounts')
+                            <li class="nav-item dropdown parent">
+                                <a href="#" data-toggle="dropdown" class="nav-link"><span class="icon s7-id"></span><span class="name">Admin Accounts</span></a>
+                                <div role="menu" class="dropdown-menu mai-sub-nav">
+                                    <a href="ui-modals.html" class="dropdown-item">Manage Accounts</a>
+                                    <a href="ui-nestable-lists.html" class="dropdown-item">Add New Account</a>
+                                </div>
+                            </li>
+                            @endcan
+
                             <li class="nav-item dropdown parent mega-menu"><a href="mega-menu.html" data-toggle="dropdown" class="nav-link"><span class="icon s7-ribbon"></span><span class="name">Mega Menu</span></a>
                                         <div role="menu" class="dropdown-menu mai-mega-menu mai-sub-nav">
                                             <div class="mai-mega-menu-row">
