@@ -125,7 +125,7 @@
 								{{ csrf_field() }}
 								
 								<div class="form-group mt-1 {{ $errors->profile->has('first_name')? 'has-danger' : '' }}">
-									<label>First Name *</label>
+									<label>First Name <span class="text-danger">*</span></label>
 									<input type="text" placeholder="Enter first name" name="first_name" value="{{ Auth()->user()->fname }}" class="form-control">
 									
 									@if($errors->profile->has('first_name'))
@@ -147,7 +147,7 @@
 								</div>
 
 								<div class="form-group mt-1 {{ $errors->profile->has('email')? 'has-danger' : '' }}">
-									<label>Email ID *</label>
+									<label>Email ID <span class="text-danger">*</span></label>
 									<input type="email" placeholder="Enter email" name="email" value="{{ Auth()->user()->email }}" class="form-control">
 
 									@if($errors->profile->has('email'))

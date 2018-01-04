@@ -14,7 +14,8 @@
 
 @section( 'contents' )
 
-
+<div class="main-content container">
+</div>
 
 @stop
 
