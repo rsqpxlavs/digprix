@@ -69,7 +69,7 @@
                                 {{ $record->browser }}
                             </td>
                             <td>{{ empty($record->device_model)? 'NA' : $record->device_model }}</td>
-                            <td>{{ $record->created_at }}</td>
+                            <td>{{ $record->created_at->diffForHumans() }} <span data-toggle="tooltip" data-placement="top" title="{{ $record->created_at->toDayDateTimeString() }}"><i class="fa fa-info-circle" aria-hidden="true"></i></span></td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -12,6 +12,6 @@ class AdminLoginHistory extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        return \Carbon\Carbon::parse($value)->toDayDateTimeString();
+        return \Carbon\Carbon::parse($value);
     }
 }
