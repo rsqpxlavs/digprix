@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2018 at 07:09 PM
+-- Generation Time: Jan 04, 2018 at 06:29 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.11
 
@@ -51,8 +51,9 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `role_id`, `purge_sessions`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'vDB7dXYU3UmhRXJKTvFTsNXxXLsaoRmH5PGZKZLjo8f8Gqr1L20k9HwTL3Cv', 1, NULL, '2018-01-01 10:28:53', 1, '2017-10-17 09:49:29', '2018-01-01 10:28:53'),
-(2, 'sourav2', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', NULL, '$2y$10$ryf4oJuFf3SZ2bqedVjaIevLLml.I.oY29d3AK4vXsXsgEYn2RW0u', 'iGCMYvS9oT37sWLtWwHzcwpFBZf5m8nWPcQxYusscoPnkPKP3WEo3LQuHuHi', 0, 2, '2018-01-01 10:28:25', 1, '2017-12-04 08:32:11', '2018-01-01 10:45:51');
+(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'jwSpn6MeOjzmB7xOC9OdjBu0UT9DXjqYigMg8EnEfPaqIqwrnEAJQpdggDHt', 1, NULL, '2018-01-01 10:28:53', 1, '2017-10-17 09:49:29', '2018-01-01 10:28:53'),
+(2, 'Sourav Rakshit', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', '5698555547', '$2y$10$ryf4oJuFf3SZ2bqedVjaIevLLml.I.oY29d3AK4vXsXsgEYn2RW0u', 'd0qL0EA8rC1zClkJhObmEyPCdRkfzUC7ea3lsV4Xblw8oK2Jkbeu93jeehKQ', 0, 2, '2018-01-01 10:28:25', 1, '2017-12-04 08:32:11', '2018-01-01 10:45:51'),
+(3, 'Sourav ', 'Rk', NULL, 'abc@xyz.com', 'srv111', NULL, '$2y$10$cOx2.xScU78aE22a6LP4ueC/7wSOS/gEez1opGoCbB2bD65SDBhVm', 'hUYJL6ACjnZzB8vU5LSMa9raL7rp1uA00z58O1wvIlqLf3jQSe68iKiBo3GQ', 0, 3, NULL, 0, '2018-01-04 15:46:31', '2018-01-04 15:46:31');
 
 -- --------------------------------------------------------
 
@@ -113,7 +114,15 @@ INSERT INTO `admin_login_history` (`id`, `admin_id`, `ip`, `isMobile`, `isTablet
 (25, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-01 10:28:45', '2018-01-01 10:28:45'),
 (26, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-01 10:46:04', '2018-01-01 10:46:04'),
 (27, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-02 12:02:16', '2018-01-02 12:02:16'),
-(28, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-03 12:38:42', '2018-01-03 12:38:42');
+(28, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-03 12:38:42', '2018-01-03 12:38:42'),
+(29, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-03 12:55:16', '2018-01-03 12:55:16'),
+(30, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 00:45:32', '2018-01-04 00:45:32'),
+(31, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 06:22:48', '2018-01-04 06:22:48'),
+(32, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 12:10:25', '2018-01-04 12:10:25'),
+(33, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 12:52:19', '2018-01-04 12:52:19'),
+(34, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 15:47:21', '2018-01-04 15:47:21'),
+(35, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 15:47:55', '2018-01-04 15:47:55'),
+(36, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 17:20:23', '2018-01-04 17:20:23');
 
 -- --------------------------------------------------------
 
@@ -135,17 +144,18 @@ CREATE TABLE `admin_password_resets` (
 
 CREATE TABLE `admin_roles` (
   `id` int(10) UNSIGNED NOT NULL,
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NA'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `admin_roles`
 --
 
-INSERT INTO `admin_roles` (`id`, `role`) VALUES
-(1, 'admin'),
-(2, 'employee'),
-(3, 'blog_author');
+INSERT INTO `admin_roles` (`id`, `role`, `display_name`) VALUES
+(1, 'admin', 'Admin'),
+(2, 'employee', 'Employee'),
+(3, 'blog_author', 'Blog Author');
 
 -- --------------------------------------------------------
 
@@ -207,7 +217,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2018_01_01_110822_create_admin_login_history', 8),
 (13, '2018_01_01_132111_create_user_login_history', 9),
 (14, '2018_01_03_100436_create_admin_roles', 10),
-(15, '2018_01_03_100556_add_role_col_to_admin', 10);
+(15, '2018_01_03_100556_add_role_col_to_admin', 10),
+(16, '2018_01_04_172020_add_role_display_name_col_to_admin_role', 11);
 
 -- --------------------------------------------------------
 
@@ -354,13 +365,13 @@ ALTER TABLE `user_login_history`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `admin_login_history`
 --
 ALTER TABLE `admin_login_history`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `admin_roles`
@@ -384,7 +395,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
