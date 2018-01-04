@@ -40,6 +40,11 @@ class Admin extends Authenticatable
         return $query->where('active', 1);
     }
 
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value);
+    }
+
     /**
      * admin has many login history records
      */

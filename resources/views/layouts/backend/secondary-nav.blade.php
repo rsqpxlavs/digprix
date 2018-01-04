@@ -113,7 +113,7 @@
                                   </li>
                       </ul>
                     </li>
-                    <li class="nav-item parent {{ return_if(on_route('admin.profile') || on_route('admin.account'), 'open') }}">
+                    <li class="nav-item parent {{ return_if(on_route('admin.profile') || on_route('admin.account') || on_route('admin.create-account-form') || on_route('admin.manage-accounts'), 'open') }}">
                         <a href="#" role="button" aria-expanded="false" class="nav-link"><span class="icon s7-tools"></span><span>Settings</span></a>
                         <ul class="mai-nav-tabs-sub mai-sub-nav nav">
 
@@ -133,10 +133,10 @@
 
                             @can('manage_admin_accounts')
                             <li class="nav-item dropdown parent">
-                                <a href="#" data-toggle="dropdown" class="nav-link"><span class="icon s7-id"></span><span class="name">Admin Accounts</span></a>
+                                <a href="#" data-toggle="dropdown" class="nav-link {{ return_if(on_route('admin.create-account-form') || on_route('admin.manage-accounts'), 'active') }}"><span class="icon s7-id"></span><span class="name">Admin Accounts</span></a>
                                 <div role="menu" class="dropdown-menu mai-sub-nav">
-                                    <a href="ui-modals.html" class="dropdown-item">Manage Accounts</a>
-                                    <a href="ui-nestable-lists.html" class="dropdown-item">Add New Account</a>
+                                    <a href="{{ route('admin.manage-accounts') }}" class="dropdown-item">Manage Accounts</a>
+                                    <a href="{{ route('admin.create-account-form') }}" class="dropdown-item">Add New Account</a>
                                 </div>
                             </li>
                             @endcan

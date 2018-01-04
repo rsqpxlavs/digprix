@@ -78,6 +78,14 @@ Route::prefix('admin')->group(function() {
         Route::get('/account', 'AccountPage@Visit')->name('admin.account');
         Route::post('/account/secure', 'AccountPage@SecureAccount')->name('admin.secure.account');
 
+        //manage admin accouts
+        Route::group(['middleware' => ['can:manage_admin_accounts']], function () {
+
+            Route::get('/create-account', 'ManageAccounts@CreateForm')->name('admin.create-account-form');
+            Route::get('/manage-admin-accounts', 'ManageAccounts@ManageAccounts')->name('admin.manage-accounts');
+            
+        });
+
     });
 
     //admin fallback route [404]

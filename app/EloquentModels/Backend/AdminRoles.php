@@ -11,4 +11,9 @@ class AdminRoles extends Model
     public $timestamps = false;
 
     protected $guarded = ['role'];
+
+    public function account()
+    {
+        return $this->belongsTo('App\Admin', 'id', 'role_id');
+    }
 }
