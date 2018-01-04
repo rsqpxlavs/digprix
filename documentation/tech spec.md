@@ -81,3 +81,5 @@ using *Laravel Echo* with *pusher* <br>
 ## Authorizations ##
 
 1. `manage_admin_accounts` gate only allows admin & super admin to manage admin accounts
+2. **do not change the role column data of `admin_roles` as the gate(s) were being authorized by checking the string name as - `if('admin')` etc.
+3. `can:manage_admin_accounts` middleware is used to restrict access of manage & add new admin account 
