@@ -27,7 +27,7 @@ class ManageAccounts extends Controller
     public function ManageAccounts()
     {
         $data = [
-            'admins' => Admin::with(['accesslevel'])->latest()->get(),
+            'admins' => Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->latest()->get(),
             'roles' => AdminRoles::withCount('account')->get()
         ];
 

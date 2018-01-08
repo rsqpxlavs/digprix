@@ -63,6 +63,13 @@ class LogSuccessfulLogin
                         'device_model' => $device->deviceModel(),
                     ]);
 
+                    //keep only last 10 records & flush older
+                    if($admin->loginhistory()->count() > 10)
+                    {
+                        $last_ten = $admin->loginhistory()->latest()->limit(10)->select('id')->get();
+                        $admin->loginhistory()->whereNotIn('id', $last_ten)->delete();
+                    }
+
                     break;
                 case "App\User":
                     //Log::info('User loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
@@ -86,6 +93,12 @@ class LogSuccessfulLogin
                         'platform' => $device->platformName(),
                         'device_model' => $device->deviceModel(),
                     ]);
+
+                    //keep only last 10 records & flush older
+                    if ($user->loginhistory()->count() > 10) {
+                        $last_ten = $user->loginhistory()->latest()->limit(10)->select('id')->get();
+                        $user->loginhistory()->whereNotIn('id', $last_ten)->delete();
+                    }
 
                     break;
                 default:
