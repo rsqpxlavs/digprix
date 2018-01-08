@@ -63,7 +63,8 @@ using *Laravel Echo* with *pusher* <br>
 3. all the admin pages will look for logout from all sessions via echo [check **main.blade.php**]
 4. `App\Http\CustomClasses\FlushAllSessions\SecureAccount` **interface** & `App\Http\CustomClasses\FlushAllSessions\FlushSessions` **class** created to execute logout from all devices/sessions
 5. `Events\backend\account\LogoutFromAllDevices` event is used for broadcasting the logout from all sessions
-6. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
+6. on `FlushSessions` class instance use `secureAccount()` [*pusher broadcast, purge_session timestamp*] to flush all the sessions & use `logoutTheUser()` to logout the user as well [***triggers logout the currently logged in admin so use with caution*]
+7. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
 
 ## Device Login History Tracking: ##
 `hisorange/browser-detect` is used to detect device data, ip etc.
