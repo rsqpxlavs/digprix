@@ -97,7 +97,7 @@
                                 </td>
                                 <td class="cell-detail">
                                     <div class="switch-button switch-button-success">
-                                        <input type="checkbox" {{ $admin->active? 'checked="checked"' : '' }} id="swt{{$loop->iteration}}"><span>
+                                        <input type="checkbox" onchange="ToggleAccount({{ $admin->id }}, this)" {{ $admin->active? 'checked="checked"' : '' }} id="swt{{$loop->iteration}}"><span>
                                         <label for="swt{{$loop->iteration}}"></label></span>
                                     </div>
                                 </td>
@@ -157,5 +157,37 @@
 @push('scripts')
 
     @include('layouts.backend.transformer')
+
+    <script type="text/javascript">
+        function ToggleAccount(id, elem)
+        {
+            elem.setAttribute('disabled', 'disabled');
+
+            $.ajaxSetup({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                url: "{{ route('admin.account.toggle') }}",
+                type: "POST",
+                data: {id: id},
+                success: function(result){
+                    elem.removeAttribute('disabled');
+                    $.gritter.add({
+                        title: "Successfully Done. .",
+                        text: "Action Performed Successfully",
+                        class_name: "gritter-color info"
+                    });
+                },
+                error: function(xhr,status,error){
+                    $.gritter.add({
+                        title: "Error Occurred!",
+                        text: "something went wrog please retry",
+                        class_name: "gritter-color danger"
+                    });
+                    elem.removeAttribute('disabled');
+                }
+            });
+            $.ajax();
+
+        }
+    </script>
 
 @endpush

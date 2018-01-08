@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\EloquentModels\Backend\AdminRoles;
 use App\Admin;
+use App\Http\CustomClasses\FlushAllSessions\FlushSessions;
 
 class ManageAccounts extends Controller
 {
@@ -32,5 +33,33 @@ class ManageAccounts extends Controller
         ];
 
         return view('backend.admin-account-manage', $data);
+    }
+
+    /**
+     * toggle account active / inactive
+     */
+    public function ToggleActive(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:admins,id'
+        ]);
+
+        $admin = Admin::find($request->id);
+        if($admin->active)
+        {
+            $admin->active = 0;
+        }
+        else
+        {
+            $admin->active = 1;
+        }
+
+        $admin->save();
+
+        //clear all active sessions
+        $flush = new FlushSessions($request->id, $admin, 'admin');
+        $flush->secureAccount();
+
+        return response(200);
     }
 }

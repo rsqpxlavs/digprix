@@ -83,6 +83,7 @@ Route::prefix('admin')->group(function() {
 
             Route::get('/create-account', 'ManageAccounts@CreateForm')->name('admin.create-account-form');
             Route::get('/manage-admin-accounts', 'ManageAccounts@ManageAccounts')->name('admin.manage-accounts');
+            Route::post('/manage-admin-accounts/toggle-active', 'ManageAccounts@ToggleActive')->name('admin.account.toggle');
             
         });
 
