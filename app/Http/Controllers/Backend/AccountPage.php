@@ -36,6 +36,7 @@ class AccountPage extends Controller
         {
             $flush = new FlushSessions(Auth::user()->id, Auth::user(), 'admin');
             $flush->secureAccount();
+            $flush->logoutTheUser();
 
             return response()->json(['secure' => 1]);
         }

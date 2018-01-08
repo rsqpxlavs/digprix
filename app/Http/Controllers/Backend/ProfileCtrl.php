@@ -173,6 +173,7 @@ class ProfileCtrl extends Controller
             //flush all active device sessions
             $flush = new FlushSessions(Auth::user()->id, Auth::user(), 'admin');
             $flush->secureAccount();
+            $flush->logoutTheUser();
             
             /*admin_notify('gritter-color info', 'Account Secured', 'your account password changed');
             return redirect()->back()->with('password-updated', true);*/

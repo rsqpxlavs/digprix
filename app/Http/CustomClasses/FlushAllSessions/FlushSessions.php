@@ -56,6 +56,5 @@ class FlushSessions implements SecureAccount {
     {
         $this->broadcastUser();
         $this->purgeSessions();
-        $this->logoutTheUser();
     }
 }
