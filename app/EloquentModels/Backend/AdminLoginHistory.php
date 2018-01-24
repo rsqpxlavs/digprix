@@ -10,8 +10,8 @@ class AdminLoginHistory extends Model
 
     protected $guarded = [];
 
-    public function getCreatedAtAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value);
-    }
+    // public function getCreatedAtAttribute($value)
+    // {
+    //     return \Carbon\Carbon::parse($value);
+    // }
 }

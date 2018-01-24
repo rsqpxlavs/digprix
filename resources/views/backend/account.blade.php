@@ -69,7 +69,7 @@
                                 {{ $record->browser }}
                             </td>
                             <td>{{ empty($record->device_model)? 'NA' : $record->device_model }}</td>
-                            <td>{{ $record->created_at->diffForHumans() }} <span data-toggle="tooltip" data-placement="top" title="{{ $record->created_at->toDayDateTimeString() }}"><i class="fa fa-info-circle" aria-hidden="true"></i></span></td>
+                            <td><span class="time-diff" data-at="{{ $record->created_at }}"></span> <span data-toggle="tooltip" data-placement="top" title="{{ $record->created_at->toDayDateTimeString() }}"><i class="fa fa-info-circle" aria-hidden="true"></i></span></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -103,6 +103,8 @@
 
     @include('layouts.backend.transformer')
     <script type="text/javascript" src="{{ asset( 'assets/backend/js/custom/secure-account.js' ) }}"></script>
-
+    
+    {{-- moment js --}}
+    <script type="text/javascript" src="{{ asset( 'assets/backend/js/custom/login-history.js' ) }}"></script>
 
 @endpush

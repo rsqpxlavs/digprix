@@ -1,7 +1,8 @@
 {
+    "/assets/backend/js/custom/login-history.js": "/assets/backend/js/custom/login-history.js",
     "/assets/backend/js/custom/LoginMain.js": "/assets/backend/js/custom/LoginMain.js",
-    "/assets/backend/js/custom/upload-pic.js": "/assets/backend/js/custom/upload-pic.js",
     "/assets/backend/js/custom/secure-account.js": "/assets/backend/js/custom/secure-account.js",
+    "/assets/backend/js/custom/upload-pic.js": "/assets/backend/js/custom/upload-pic.js",
     "/assets/backend/js/custom/password-main.js": "/assets/backend/js/custom/password-main.js",
     "/assets/backend/js/custom/init-broadcasting.js": "/assets/backend/js/custom/init-broadcasting.js"
 }
