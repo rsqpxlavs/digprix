@@ -18,4 +18,7 @@
 - admin has many history
 
 ## admin_roles ##
-holds predefined 3 roles for admin level users, role is mapped directly into the admins table as role_id can be access from admin instance by relation - `accesslevel`
+holds predefined 3 roles for admin level users, role is mapped by the `map_admin_roles` table & can be access from admin instance by relation - `accesslevel`
+
+## map\_admin\_roles ##
+acts as pivot table between `admin_roles` & `admins` table
