@@ -58,6 +58,6 @@ class Admin extends Authenticatable
      */
     public function accesslevel()
     {
-        return $this->hasOne('App\EloquentModels\Backend\AdminRoles', 'id', 'role_id');
+        return $this->belongsToMany('App\EloquentModels\Backend\AdminRoles', 'map_admin_roles', 'admin_id', 'role_id');
     }
 }

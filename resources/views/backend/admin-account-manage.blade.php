@@ -87,7 +87,17 @@
                                 <td class="user-avatar cell-detail user-info">
                                     <img style="width:50px;height:50px;" src="{{ asset('assets/backend/img/profile') }} {{ ($admin->photo)? '/'. $admin->photo : '/blank.png' }}" alt="Avatar">
                                     <span>{{ $admin->fname . ' ' .  $admin->lname}} @if($admin->username) ( <small class="text-info">{{ '@'. $admin->username }}</small> ) @endif</span>
-                                    <span class="cell-detail-description">{{ optional($admin->accesslevel)->display_name }}</span>
+                                    <span class="cell-detail-description">
+                                        @if($admin->accesslevel)
+                                            @foreach($admin->accesslevel as $role)
+                                                {{ $role->display_name }}
+
+                                                @if(! $loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </span>
                                 </td>
                                 <td class="cell-detail"> 
                                     <span>{{ $admin->email }}</span>
