@@ -59,3 +59,11 @@
     margin-right: 6px;
 }
 
+/**manage account page active filter anchor tag**/
+a.filter-active{
+    border: 1px solid #ccc;
+    padding: 2px;
+    background: #8BC34A;
+    color: #ffffff;
+}
+

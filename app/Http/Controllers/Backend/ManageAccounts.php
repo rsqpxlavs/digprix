@@ -25,10 +25,31 @@ class ManageAccounts extends Controller
     /**
      * manage added accounts
      */
-    public function ManageAccounts()
+    public function ManageAccounts(Request $request)
     {
+        //if filter by admin role
+        if($request->has('role'))
+        {
+            $role = $request->query('role');
+            if($role === 'all')
+            {
+                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->latest()->get();
+            }
+            else
+            {
+                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->whereHas('accesslevel', function ($query) use ($role) {
+                    $query->where('role', $role);
+                })->latest()->get();
+            }
+        }
+        else
+        {
+            $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->latest()->get();
+        }
+
         $data = [
-            'admins' => Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->latest()->get(),
+            'admins' => $admins,
+            'total_admins' => Admin::count() - 1,
             'roles' => AdminRoles::withCount('account')->get()
         ];
 

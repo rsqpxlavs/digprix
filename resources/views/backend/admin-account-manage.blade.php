@@ -20,9 +20,9 @@
           <div class="col-sm-12">
             <div class="panel panel-default panel-table">
               <div class="panel-heading">Available Accounts - 
-                  <a href="?role=all">All ({{ $admins->count() - 1 }})</a> |
+                  <a href="?role=all" {!! (request()->query('role') === 'all' || ! request()->has('role'))? 'class="filter-active"' : '' !!} >All ({{ $total_admins }})</a> |
                   @foreach($roles as $role)
-                    <a href="?role={{$role->role}}">{{ $role->display_name }} ({{ $role->account_count }})</a>
+                    <a href="?role={{$role->role}}" {!! (request()->query('role') === $role->role)? 'class="filter-active"' : '' !!} >{{ $role->display_name }} ({{ $role->account_count }})</a>
 
                     @if(!$loop->last)
                         |
