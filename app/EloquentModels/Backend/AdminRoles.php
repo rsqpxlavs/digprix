@@ -14,6 +14,6 @@ class AdminRoles extends Model
 
     public function account()
     {
-        return $this->belongsToMany('App\EloquentModels\Backend\AdminRoles', 'map_admin_roles', 'role_id', 'admin_id');
+        return $this->belongsToMany('App\Admin', 'map_admin_roles', 'role_id', 'admin_id');
     }
 }
