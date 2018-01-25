@@ -112,13 +112,22 @@
 						<div class="panel-heading panel-heading-divider">Personal Details<span class="panel-subtitle">set username & mobile no., you may login via them too</span></div>
 						<div class="panel-body">
 							@if(session('profile-updated'))
-								<div role="alert" class="alert alert-cream alert-success alert-dismissible">
-									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Updated !</strong> profile data updated successfully, looks all good
-								</div>
+								
+								@component('components.backend.alert-success')
+									@slot('alert_look')
+										cream
+									@endslot
+
+									<strong>Updated !</strong> profile data updated successfully, looks all good
+								@endcomponent
+
 							@elseif($errors->profile->any())
-								<div role="alert" class="alert alert-cream alert-warning alert-dismissible">
-									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-attention"></span><strong>Validation Error!</strong> check your input and try again
-								</div>
+
+								@component('components.backend.validation-err')
+									@slot('alert_look')
+										cream
+									@endslot
+								@endcomponent
 							@endif
 
 							<form action="{{ route('admin.update.profile') }}" method="post">
@@ -202,9 +211,15 @@
 
 							{{-- password update/incorrect alert --}}
 							@if(session('password-updated'))
-								<div role="alert" class="alert alert-dark alert-success alert-dismissible">
-									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-check"></span><strong>Great Job!</strong> account password updated successfully
-								</div>
+
+								@component('components.backend.alert-success')
+									@slot('alert_look')
+										dark
+									@endslot
+
+									<strong>Great Job!</strong> account password updated successfully
+								@endcomponent
+
 							@elseif(session('incorrect-currpasswd'))
 								<div role="alert" class="alert alert-contrast alert-danger alert-dismissible">
 									<div class="icon"><span class="s7-close"></span></div>
@@ -216,15 +231,19 @@
 
 							{{-- validation errors --}}
 							@if ($errors->password->any())
-								<div role="alert" class="alert alert-cream alert-warning alert-dismissible">
-									<button type="button" data-dismiss="alert" aria-label="Close" class="close"><span aria-hidden="true" class="s7-close"></span></button><span class="icon s7-attention"></span>
-									<strong>Validation Error!</strong> check your input properly
+
+								@component('components.backend.validation-err')
+									@slot('alert_look')
+										cream
+									@endslot
+
 									<ul>
 										@foreach ($errors->password->all() as $error)
 											<li>{{ $error }}</li>
 										@endforeach
 									</ul>
-								</div>
+								@endcomponent
+
 							@endif
 
 
