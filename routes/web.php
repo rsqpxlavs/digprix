@@ -82,6 +82,7 @@ Route::prefix('admin')->group(function() {
         Route::group(['middleware' => ['can:manage_admin_accounts']], function () {
 
             Route::get('/create-account', 'ManageAccounts@CreateForm')->name('admin.create-account-form');
+            Route::post('/create-account/new', 'ManageAccounts@CreateNew')->name('admin.create-new-account');
             Route::get('/manage-admin-accounts', 'ManageAccounts@ManageAccounts')->name('admin.manage-accounts');
             Route::post('/manage-admin-accounts/toggle-active', 'ManageAccounts@ToggleActive')->name('admin.account.toggle');
             
