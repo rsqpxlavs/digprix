@@ -75,9 +75,6 @@
                     </thead>
                     <tbody>
                         @foreach($admins as $admin)
-                            @php
-                                if($admin->super_admin || $admin->id === Auth::user()->id) continue;
-                            @endphp
                             <tr>
                                 <td>
                                     <label class="custom-control custom-control-sm custom-checkbox">
@@ -112,8 +109,13 @@
                                     </div>
                                 </td>
                                 <td class="cell-detail">
-                                    <span>{{ $admin->loginhistory->last()->created_at->toFormattedDateString() }}</span>
-                                    <span class="cell-detail-description">{{ $admin->loginhistory->last()->created_at->format('h:i:s A') }}</span>
+                                    @if($admin->loginhistory->count())
+                                        <span>{{ $admin->loginhistory->last()->created_at->toFormattedDateString() }}</span>
+                                        <span class="cell-detail-description">{{ $admin->loginhistory->last()->created_at->format('h:i:s A') }}</span>
+                                    @else
+                                        <span>Never Logged in</span>
+                                    @endif
+                                    
                                 </td>
                                 <td class="cell-detail">
                                     <span>{{ $admin->created_at->toFormattedDateString() }}</span>
