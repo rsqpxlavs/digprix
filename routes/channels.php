@@ -22,6 +22,7 @@ Broadcast::channel('all-admins', function ($user) {
     $photo = asset('assets/backend/img/profile/' . $file);
 
     return [
+        'id'    => $user->id,
         'username' => $user->username, 
         'fname' => $user->fname, 
         'fullname' => $user->fname . ' ' . $user->lname,

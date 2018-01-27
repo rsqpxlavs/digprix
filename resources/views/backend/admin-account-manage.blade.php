@@ -57,7 +57,7 @@
               </div>
                 
                 <div class="table-responsive noSwipe">
-                  <table class="table table-striped table-hover">
+                  <table class="table table-striped table-hover backend-list">
                     <thead>
                       <tr>
                         <th style="width:5%;">
@@ -75,7 +75,7 @@
                     </thead>
                     <tbody>
                         @foreach($admins as $admin)
-                            <tr>
+                            <tr data-user="{{ $admin->id }}">
                                 <td>
                                     <label class="custom-control custom-control-sm custom-checkbox">
                                         <input type="checkbox" class="custom-control-input"><span class="custom-control-indicator"></span>
@@ -131,30 +131,6 @@
                                 </td>
                             </tr>
                         @endforeach
-                      <!-- <tr class="online">
-                        <td>
-                          <label class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input"><span class="custom-control-indicator"></span>
-                          </label>
-                        </td>
-                        <td class="user-avatar cell-detail user-info"><img src="assets/img/avatars/img1.jpg" alt="Avatar"><span>Ryan Lawrence</span><span class="cell-detail-description">Designer</span></td>
-                        <td class="cell-detail"> <span>Main structure</span><span class="cell-detail-description">CLI Connector</span></td>
-                        <td class="milestone"><span class="completed">22 / 30</span><span class="version">v1.1.5</span>
-                          <div class="progress">
-                            <div style="width: 75%" class="progress-bar progress-bar-primary"></div>
-                          </div>
-                        </td>
-                        <td class="cell-detail"><span>develop</span><span class="cell-detail-description">4cc1bc2</span></td>
-                        <td class="cell-detail"><span>April 22, 2016</span><span class="cell-detail-description">14:45</span></td>
-                        <td class="text-right">
-                          <div class="btn-group btn-hspace">
-                            <button type="button" data-toggle="dropdown" class="btn btn-secondary btn-xs dropdown-toggle">Open <span class="icon-dropdown s7-angle-down"></span></button>
-                            <div role="menu" class="dropdown-menu dropdown-menu-right"><a href="#" class="dropdown-item">Action</a><a href="#" class="dropdown-item">Another action</a><a href="#" class="dropdown-item">Something else here</a>
-                              <div class="dropdown-divider"></div><a href="#" class="dropdown-item">Separated link</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr> -->
                     </tbody>
                   </table>
                 </div>
@@ -171,6 +147,42 @@
     @include('layouts.backend.transformer')
 
     <script type="text/javascript">
+        {{-- echo presence --}}
+        function refreshOnlineUsers(userList){
+            $('table.backend-list tr').each(function(){
+                let userId = parseInt($(this).attr('data-user'));
+                if(userList.includes(userId) ){
+                    $(this).attr('class', 'online');
+                }
+                else{
+                    $(this).attr('class', 'offline');
+                }
+            });
+        }
+
+        let allusers = [];
+        Echo.join('all-admins')
+            .here((users) => {
+                if(users.length > 0){
+                    users.forEach(element => {
+                        allusers.push(element.id);
+                    });
+
+                    refreshOnlineUsers(allusers);
+                }   
+            })
+            .joining((user) => {
+                allusers.push(user.id);
+                refreshOnlineUsers(allusers);
+            })
+            .leaving((user) => {
+                let currUser = allusers.indexOf(user.id);
+                if (currUser > -1) {
+                    allusers.splice(currUser, 1);
+                    refreshOnlineUsers(allusers);
+                }
+            });
+
         function ToggleAccount(id, elem)
         {
             elem.setAttribute('disabled', 'disabled');
