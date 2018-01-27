@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Request;
 use App\EloquentModels\Backend\AdminLoginHistory;
 use App\{Admin, User};
 use hisorange\BrowserDetect\Facade as Browser;
+use App\Events\backend\notify\SomeoneJustLoggedIn;
 
 class LogSuccessfulLogin
 {
@@ -69,6 +70,9 @@ class LogSuccessfulLogin
                         $last_ten = $admin->loginhistory()->latest()->limit(10)->select('id')->get();
                         $admin->loginhistory()->whereNotIn('id', $last_ten)->delete();
                     }
+
+                    //notify to the backend presence channel about new user logged in
+                    broadcast(new SomeoneJustLoggedIn())->toOthers();
 
                     break;
                 case "App\User":

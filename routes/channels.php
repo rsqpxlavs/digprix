@@ -15,6 +15,20 @@ Broadcast::channel('logout-from-all.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
+Broadcast::channel('all-admins', function ($user) {
+
+    //get the user's photo
+    $file = $user->photo ?? 'blank.png';
+    $photo = asset('assets/backend/img/profile/' . $file);
+
+    return [
+        'username' => $user->username, 
+        'fname' => $user->fname, 
+        'fullname' => $user->fname . ' ' . $user->lname,
+        'photo' => $photo
+    ];
+});
+
 /*Broadcast::channel('order.{orderId}', function ($user, $orderId) {
     return $user->id === Order::findOrNew($orderId)->user_id;
 });*/
