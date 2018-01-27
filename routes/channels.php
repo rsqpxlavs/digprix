@@ -25,7 +25,9 @@ Broadcast::channel('all-admins', function ($user) {
         'username' => $user->username, 
         'fname' => $user->fname, 
         'fullname' => $user->fname . ' ' . $user->lname,
-        'photo' => $photo
+        'photo' => $photo,
+        'is_super_admin' => ($user->super_admin)? 1 : 0,
+        'is_admin' => ($user->accesslevel->contains('role', 'admin'))? 1 : 0
     ];
 });
 

@@ -37,6 +37,42 @@
 
         {{-- backend user presence --}}
         <script type="text/javascript" src="{{ asset('assets/backend/js/custom/notify-loggedin.js') }}"></script>
+        <script type="text/javascript">
+            (function () {
+                document.onreadystatechange = () => {
+                    if (document.readyState === 'complete') {
+                        Echo.join('all-admins')
+                            .here((users) => {
+                                //array of objects
+                            })
+                            .joining((user) => {
+                                @if(Auth::user()->super_admin)
+                                    let canNotify = atmptNotification();
+                                    if (canNotify){
+                                        let username = (user.username) ? `(@ ${user.username})` : '';
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                    }
+                                @elseif(Auth::user()->accesslevel->contains('role', 'admin'))
+                                    let canNotify = atmptNotification();
+                                    if (canNotify && user.is_super_admin == 0){
+                                        let username = (user.username) ? `(@ ${user.username})` : '';
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                    }
+                                @else
+                                    let canNotify = atmptNotification();
+                                    if (canNotify && user.is_super_admin == 0 && user.is_admin == 0){
+                                        let username = (user.username) ? `(@ ${user.username})` : '';
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                    }
+                                @endif
+                            })
+                            .leaving((user) => {
+                                // console.log(`${user.name} left`);
+                            });
+                    }
+                };
+            })();
+        </script>
 
     </head>
 
