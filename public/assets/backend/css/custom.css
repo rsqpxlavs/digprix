@@ -67,3 +67,28 @@ a.filter-active{
     color: #ffffff;
 }
 
+/**footer stick notification**/
+#sticky-footer-info {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 24px;
+    padding: 8px 0;
+    z-index: 100;
+    background: #444;
+    transition: transform .3s;
+    font-family: Muli,sans-serif;
+    color: #fafafa;
+}
+#sticky-footer-info p {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+#sticky-footer-info p a#close-msg{
+    color: #ffffff;
+    margin-left: 30px;
+}
+

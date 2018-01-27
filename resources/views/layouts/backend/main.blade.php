@@ -35,6 +35,9 @@
             };
         </script>
 
+        {{-- backend user presence --}}
+        <script type="text/javascript" src="{{ asset('assets/backend/js/custom/notify-loggedin.js') }}"></script>
+
     </head>
 
     <body>
