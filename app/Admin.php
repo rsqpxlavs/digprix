@@ -40,6 +40,10 @@ class Admin extends Authenticatable
         return $query->where('active', 1);
     }
 
+    protected $casts = [
+        'super_admin' => 'boolean',
+    ];
+
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value);
