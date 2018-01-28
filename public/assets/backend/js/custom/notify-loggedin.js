@@ -46,6 +46,60 @@ function atmptNotification(){
 }
 
 /**
+ * prevent duplicate push notification
+ */
+function checkDuplicate(tag){
+    if (typeof (Storage) !== "undefined") {
+        
+        if (sessionStorage.getItem("push-tags")) {
+            let currTags = JSON.parse(sessionStorage.getItem("push-tags"));
+            
+            if(currTags.includes(parseInt(tag))){
+                return false;
+            }
+            else{
+                currTags.push(tag);
+                sessionStorage.setItem("push-tags", JSON.stringify(currTags));
+                return true;
+            }
+        }
+
+        currTag = [tag];
+        sessionStorage.setItem("push-tags", JSON.stringify(currTag));
+        return true;
+    }
+    else{
+        //doesn't support session storage use ajax
+
+        //make an ajax call to check whether this notification was already displayed
+        const URL = document.head.querySelector('meta[name="track-tags"]').content;
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", `${URL}`, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector('meta[name="csrf-token"]').content);
+
+        data = 'tag=' + tag;
+
+        xhttp.send(data);
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    let resp = JSON.parse(this.response);
+
+                    if (parseInt(resp.confirm) === 1) {
+                        return true;
+                    }
+                }
+            }
+        };
+
+        return false;
+    }
+}
+
+/**
  * this function creates the footer sticky info bar
  */
 function footerStick(textInfo='some info here . . .'){
@@ -71,39 +125,22 @@ function footerStick(textInfo='some info here . . .'){
 
 /**
  * shows browser notification
- * ajax hit the notification tag to check if this notification previously was displayed
+ * ajax hit / js sessionStorage the notification tag to check if this notification previously was displayed
  */
 function showNotification(title, body, icon='', tag){
-    //make an ajax call to check whether this notification was already displayed
-    const URL = document.head.querySelector('meta[name="track-tags"]').content;
+    
+    let inFreshMsg = checkDuplicate(tag);
 
-    let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", `${URL}`, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector('meta[name="csrf-token"]').content);
+    if (inFreshMsg == true){
+        let notify = new Notification(title, {
+            body: body,
+            icon: icon,
+            tag: tag
+        });
 
-    data = 'tag=' + tag;
-
-    xhttp.send(data);
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                let resp = JSON.parse(this.response);
-                
-                if (parseInt(resp.confirm) === 1){
-                    let notify = new Notification(title, {
-                        body: body,
-                        icon: icon,
-                        tag: tag
-                    });
-
-                    notify.onclick = function () {
-                        //user just clicked on the notification
-                        // console.log(this.tag);
-                    }
-                }
-            }
+        notify.onclick = function () {
+            //user just clicked on the notification
+            // console.log(this.tag);
         }
-    };
+    }
 }
