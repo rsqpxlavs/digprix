@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2018 at 07:58 PM
+-- Generation Time: Jan 28, 2018 at 03:00 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.11
 
@@ -50,10 +50,10 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `fname`, `lname`, `photo`, `email`, `username`, `mobile`, `password`, `remember_token`, `super_admin`, `purge_sessions`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'Els1pxd3CitINj206AWfTsBhdSX3BTmg5KxwnkPF3EAAC7Vx2xg9kGB1tKJy', 1, '2018-01-08 15:44:04', 1, '2017-10-17 09:49:29', '2018-01-08 15:44:04'),
-(2, 'Sourav Rakshit', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', '5698555547', '$2y$10$ryf4oJuFf3SZ2bqedVjaIevLLml.I.oY29d3AK4vXsXsgEYn2RW0u', '8vZJ6x8YmYUmL7Z6OwdQAOmxKMubNYjDAdwCJ9HvKioQxAS5bGl443e9M1PK', 0, '2018-01-01 10:28:25', 1, '2017-12-04 08:32:11', '2018-01-08 13:58:47'),
-(3, 'Sourav ', 'Rk', NULL, 'abc@xyz.com', 'srv111', NULL, '$2y$10$cOx2.xScU78aE22a6LP4ueC/7wSOS/gEez1opGoCbB2bD65SDBhVm', NULL, 0, '2018-01-24 05:43:31', 1, '2018-01-04 15:46:31', '2018-01-24 05:43:31'),
-(4, 'Brock', 'Lesnar', NULL, 'brock@wwe.com', 'brock11', NULL, '$2y$10$JoLg7QM.6dNPwZ1dCMDbne/G60qDj/drz8E6AetXGnZ9JznjITfBW', 'wXkrzXB2BTHXepLV28ujtc8wzRIn5JXy1ePLwcrhjOVoQTxupUgC83oDbEK3', 0, NULL, 1, '2018-01-25 13:46:43', '2018-01-25 13:46:43'),
+(1, 'Sourav', 'R', 'brock.jpg', 'srv.nxr@gmail.com', 'sourav', '8013463113', '$2y$10$0ma3CMsBSnYM73TQBtWMxueqzk/YplA07tT3zVM.O39YL9JZclDuu', 'cIMvXFcg2E1Y6I7o9gXmfUaXXBpaWV4UsLz3I3ITPhgrj8dPMebGY2gvIfNX', 1, '2018-01-28 13:58:14', 1, '2017-10-17 09:49:29', '2018-01-28 13:58:14'),
+(2, 'Sourav Rakshit', NULL, NULL, 'developer.srv1@gmail.com', 'sourav2', '5698555547', '$2y$10$ryf4oJuFf3SZ2bqedVjaIevLLml.I.oY29d3AK4vXsXsgEYn2RW0u', '7Q8PX55NTRbpo21UPeVscYbSHbWe3905vMcyQvXnFzjsG9z9xup8yDt4CLkq', 0, '2018-01-01 10:28:25', 1, '2017-12-04 08:32:11', '2018-01-08 13:58:47'),
+(3, 'Sourav ', 'Rk', NULL, 'abc@xyz.com', 'srv111', NULL, '$2y$10$/8rn8Fais1/gq353MUWghenq0a8ElnUiDxBJH4V.GXjoi2SLgJ7C.', 'ZB7AlZPX4dK2C2SpwgZzB8h2YROG02I7pjMMoakp8tGubA6eiQx9CbylJuje', 0, '2018-01-28 13:33:16', 1, '2018-01-04 15:46:31', '2018-01-28 13:33:16'),
+(4, 'Brock', 'Lesnar', NULL, 'brock@wwe.com', 'brock11', NULL, '$2y$10$iK62JngJVXSYs/J7ipdaKuSO1nvblPCTVsl6Zql3qAjlV/ggXuVV6', 'xmkUJ9hk1G3sUun5ZUB9H0s1MO20Hcx3J1nyX5kYR3G673qGTv4uMQOxNdCH', 0, '2018-01-28 13:55:46', 1, '2018-01-25 13:46:43', '2018-01-28 13:55:46'),
 (5, 'Lorem', 'Xy', NULL, 'abc@abc.com', 'abcuser', NULL, '$2y$10$6V3/EzHpQmzFBcEKnZIbouUn0GpwwlXCKtoXXfOWgLiX8QfRUywJi', NULL, 0, NULL, 1, '2018-01-25 18:29:30', '2018-01-25 18:29:30'),
 (6, 'Power', 'Ranger', NULL, 'abc@example.com', NULL, NULL, '$2y$10$nq7O4YX3jq/EfPprDEtueunrEZ/jBkdnFaOrkjuGNweykM/vHb2JW', NULL, 0, NULL, 1, '2018-01-25 18:30:38', '2018-01-25 18:30:38');
 
@@ -89,41 +89,46 @@ CREATE TABLE `admin_login_history` (
 --
 
 INSERT INTO `admin_login_history` (`id`, `admin_id`, `ip`, `isMobile`, `isTablet`, `isDesktop`, `isBot`, `isChrome`, `isFirefox`, `isOpera`, `isSafari`, `isIE`, `user_agent`, `browser`, `platform`, `device_model`, `created_at`, `updated_at`) VALUES
-(26, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-01 10:46:04', '2018-01-01 10:46:04'),
-(29, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-03 12:55:16', '2018-01-03 12:55:16'),
-(30, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 00:45:32', '2018-01-04 00:45:32'),
-(32, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 12:10:25', '2018-01-04 12:10:25'),
-(34, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 15:47:21', '2018-01-04 15:47:21'),
-(36, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-04 17:20:23', '2018-01-04 17:20:23'),
-(37, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 12:35:36', '2018-01-08 12:35:36'),
-(39, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 13:22:23', '2018-01-08 13:22:23'),
-(40, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 13:23:33', '2018-01-08 13:23:33'),
-(41, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 13:24:12', '2018-01-08 13:24:12'),
-(42, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 13:24:32', '2018-01-08 13:24:32'),
-(44, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 15:35:12', '2018-01-08 15:35:12'),
-(46, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 15:41:52', '2018-01-08 15:41:52'),
-(47, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 15:42:55', '2018-01-08 15:42:55'),
-(48, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 15:43:08', '2018-01-08 15:43:08'),
-(50, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-08 15:43:52', '2018-01-08 15:43:52'),
-(55, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-24 10:16:12', '2018-01-24 10:16:12'),
-(56, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-24 13:33:22', '2018-01-24 13:33:22'),
-(57, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-24 14:15:32', '2018-01-24 14:15:32'),
-(59, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-24 14:42:00', '2018-01-24 14:42:00'),
-(60, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 05:31:31', '2018-01-25 05:31:31'),
-(61, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 08:01:53', '2018-01-25 08:01:53'),
-(62, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 09:51:48', '2018-01-25 09:51:48'),
-(63, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 11:16:29', '2018-01-25 11:16:29'),
-(64, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 13:57:57', '2018-01-25 13:57:57'),
-(65, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 14:02:01', '2018-01-25 14:02:01'),
-(66, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 14:04:28', '2018-01-25 14:04:28'),
-(67, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 14:05:15', '2018-01-25 14:05:15'),
-(68, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 15:11:21', '2018-01-25 15:11:21'),
-(69, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 15:18:48', '2018-01-25 15:18:48'),
-(70, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 17:32:33', '2018-01-25 17:32:33'),
-(71, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 17:49:23', '2018-01-25 17:49:23'),
-(72, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 17:49:25', '2018-01-25 17:49:25'),
-(73, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 17:49:25', '2018-01-25 17:49:25'),
-(74, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-25 18:47:48', '2018-01-25 18:47:48');
+(148, 2, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 07:25:00', '2018-01-28 07:25:00'),
+(156, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 08:35:05', '2018-01-28 08:35:05'),
+(166, 2, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 09:24:54', '2018-01-28 09:24:54'),
+(171, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 09:27:45', '2018-01-28 09:27:45'),
+(172, 4, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 09:29:31', '2018-01-28 09:29:31'),
+(174, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:02:55', '2018-01-28 10:02:55'),
+(181, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:22:37', '2018-01-28 10:22:37'),
+(182, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:25:01', '2018-01-28 10:25:01'),
+(183, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 11:41:22', '2018-01-28 11:41:22'),
+(186, 4, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 12:31:00', '2018-01-28 12:31:00'),
+(187, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 12:35:53', '2018-01-28 12:35:53'),
+(188, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 12:38:34', '2018-01-28 12:38:34'),
+(189, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:24:55', '2018-01-28 13:24:55'),
+(190, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:26:13', '2018-01-28 13:26:13'),
+(191, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:29:35', '2018-01-28 13:29:35'),
+(192, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:30:26', '2018-01-28 13:30:26'),
+(193, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:30:31', '2018-01-28 13:30:31'),
+(194, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:32:54', '2018-01-28 13:32:54'),
+(195, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:33:00', '2018-01-28 13:33:00'),
+(203, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:44:31', '2018-01-28 13:44:31'),
+(204, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:44:50', '2018-01-28 13:44:50'),
+(205, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:46:42', '2018-01-28 13:46:42'),
+(206, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:46:52', '2018-01-28 13:46:52'),
+(207, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:47:14', '2018-01-28 13:47:14'),
+(208, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:47:30', '2018-01-28 13:47:30'),
+(209, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:48:50', '2018-01-28 13:48:50'),
+(210, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:49:17', '2018-01-28 13:49:17'),
+(211, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:50:25', '2018-01-28 13:50:25'),
+(212, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:51:42', '2018-01-28 13:51:42'),
+(213, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:51:58', '2018-01-28 13:51:58'),
+(214, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:52:13', '2018-01-28 13:52:13'),
+(215, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:52:58', '2018-01-28 13:52:58'),
+(216, 3, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:53:21', '2018-01-28 13:53:21'),
+(217, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:54:59', '2018-01-28 13:54:59'),
+(218, 2, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:55:20', '2018-01-28 13:55:20'),
+(219, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:55:36', '2018-01-28 13:55:36'),
+(220, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:57:55', '2018-01-28 13:57:55'),
+(221, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:58:03', '2018-01-28 13:58:03'),
+(222, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:58:34', '2018-01-28 13:58:34'),
+(223, 4, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 13:58:42', '2018-01-28 13:58:42');
 
 -- --------------------------------------------------------
 
@@ -194,8 +199,7 @@ CREATE TABLE `jobs` (
 --
 
 INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `available_at`, `created_at`) VALUES
-(22, 'backend-high', '{\"displayName\":\"App\\\\Events\\\\backend\\\\account\\\\LogoutFromAllDevices\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"timeout\":null,\"timeoutAt\":null,\"data\":{\"commandName\":\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\",\"command\":\"O:38:\\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\\":7:{s:5:\\\"event\\\";O:47:\\\"App\\\\Events\\\\backend\\\\account\\\\LogoutFromAllDevices\\\":3:{s:14:\\\"broadcastQueue\\\";s:12:\\\"backend-high\\\";s:7:\\\"user_id\\\";s:1:\\\"3\\\";s:6:\\\"socket\\\";N;}s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:5:\\\"delay\\\";N;s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1516772605, 1516772605),
-(23, 'backend-high', '{\"displayName\":\"App\\\\Events\\\\backend\\\\account\\\\LogoutFromAllDevices\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"timeout\":null,\"timeoutAt\":null,\"data\":{\"commandName\":\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\",\"command\":\"O:38:\\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\\":7:{s:5:\\\"event\\\";O:47:\\\"App\\\\Events\\\\backend\\\\account\\\\LogoutFromAllDevices\\\":3:{s:14:\\\"broadcastQueue\\\";s:12:\\\"backend-high\\\";s:7:\\\"user_id\\\";s:1:\\\"3\\\";s:6:\\\"socket\\\";N;}s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:5:\\\"delay\\\";N;s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1516772610, 1516772610);
+(87, 'backend-low', '{\"displayName\":\"App\\\\Events\\\\backend\\\\notify\\\\SomeoneJustLoggedIn\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"timeout\":null,\"timeoutAt\":null,\"data\":{\"commandName\":\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\",\"command\":\"O:38:\\\"Illuminate\\\\Broadcasting\\\\BroadcastEvent\\\":7:{s:5:\\\"event\\\";O:45:\\\"App\\\\Events\\\\backend\\\\notify\\\\SomeoneJustLoggedIn\\\":2:{s:14:\\\"broadcastQueue\\\";s:11:\\\"backend-low\\\";s:6:\\\"socket\\\";N;}s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:5:\\\"delay\\\";N;s:7:\\\"chained\\\";a:0:{}}\"}}', 0, NULL, 1517120982, 1517120982);
 
 -- --------------------------------------------------------
 
@@ -291,7 +295,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'rTesLnETfn9ctzEZpaK5uNaI1et52bnWL0lCqlqBDJVNBryO3ViiyDKXASy8', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
+(1, 'Sourav', 'developer.srv1@gmail.com', '$2y$10$2KuTXRRtJlQibaeZbAJDFOb.y2YHmIxv/nDlXFpiXXfwbqIF.2k1q', 'z9mFrEbLBSjI23roMiDMtfEN9YLMXxyoKxrmCQrAPoTqZ45Rto2mf8r6QmYo', '2017-10-13 02:59:17', '2017-10-13 03:00:52');
 
 -- --------------------------------------------------------
 
@@ -325,7 +329,16 @@ CREATE TABLE `user_login_history` (
 --
 
 INSERT INTO `user_login_history` (`id`, `user_id`, `ip`, `isMobile`, `isTablet`, `isDesktop`, `isBot`, `isChrome`, `isFirefox`, `isOpera`, `isSafari`, `isIE`, `user_agent`, `browser`, `platform`, `device_model`, `created_at`, `updated_at`) VALUES
-(1, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36', 'Chrome 63.0.3239', 'Windows 10', '', '2018-01-01 07:59:03', '2018-01-01 07:59:03');
+(2, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-27 11:42:20', '2018-01-27 11:42:20'),
+(3, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-27 17:53:56', '2018-01-27 17:53:56'),
+(4, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 08:17:22', '2018-01-28 08:17:22'),
+(5, 1, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 08:54:04', '2018-01-28 08:54:04'),
+(6, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:19:33', '2018-01-28 10:19:33'),
+(7, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:21:12', '2018-01-28 10:21:12'),
+(8, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 10:22:20', '2018-01-28 10:22:20'),
+(9, 1, '127.0.0.1', 0, 0, 1, 0, 0, 1, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0', 'Firefox 58', 'Windows 10', '', '2018-01-28 12:29:32', '2018-01-28 12:29:32'),
+(10, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 12:29:39', '2018-01-28 12:29:39'),
+(11, 1, '127.0.0.1', 0, 0, 1, 0, 1, 0, 0, 0, 0, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Chrome 64.0.3282', 'Windows 10', '', '2018-01-28 12:29:47', '2018-01-28 12:29:47');
 
 --
 -- Indexes for dumped tables
@@ -415,7 +428,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `admin_login_history`
 --
 ALTER TABLE `admin_login_history`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
 
 --
 -- AUTO_INCREMENT for table `admin_roles`
@@ -433,7 +446,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `map_admin_roles`
@@ -457,7 +470,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_login_history`
 --
 ALTER TABLE `user_login_history`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
