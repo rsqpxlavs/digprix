@@ -23,6 +23,7 @@ Broadcast::channel('all-admins', function ($user) {
 
     return [
         'id'    => $user->id,
+        'tag'   => $user->loginhistory()->latest()->first()->id,
         'username' => $user->username, 
         'fname' => $user->fname, 
         'fullname' => $user->fname . ' ' . $user->lname,
