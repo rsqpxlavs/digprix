@@ -71,14 +71,39 @@ function footerStick(textInfo='some info here . . .'){
 
 /**
  * shows browser notification
+ * ajax hit the notification tag to check if this notification previously was displayed
  */
-function showNotification(title, body, icon=''){
-    let notify = new Notification(title, {
-        body: body,
-        icon: icon
-    });
+function showNotification(title, body, icon='', tag){
+    //make an ajax call to check whether this notification was already displayed
+    const URL = document.head.querySelector('meta[name="track-tags"]').content;
 
-    notify.onclick = function () {
-        //user just clicked on the notification
-    }
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", `${URL}`, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector('meta[name="csrf-token"]').content);
+
+    data = 'tag=' + tag;
+
+    xhttp.send(data);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let resp = JSON.parse(this.response);
+                
+                if (parseInt(resp.confirm) === 1){
+                    let notify = new Notification(title, {
+                        body: body,
+                        icon: icon,
+                        tag: tag
+                    });
+
+                    notify.onclick = function () {
+                        //user just clicked on the notification
+                        // console.log(this.tag);
+                    }
+                }
+            }
+        }
+    };
 }

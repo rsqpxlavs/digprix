@@ -6,6 +6,7 @@
         <meta name="robots" content="noindex, nofollow">
         <link rel="shortcut icon" href="{{ asset( 'assets/favicon.png' )}}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="track-tags" content="{{ route('admin.track.presence.tag') }}">
         @yield('seo')
         <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/stroke-7/style.css' )}}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset( 'assets/backend/lib/perfect-scrollbar/css/perfect-scrollbar.min.css' )}}"/>
@@ -43,26 +44,26 @@
                     if (document.readyState === 'complete') {
                         Echo.join('all-admins')
                             .here((users) => {
-                                //array of objects
+                                // console.log(users);
                             })
                             .joining((user) => {
                                 @if(Auth::user()->super_admin)
                                     let canNotify = atmptNotification();
                                     if (canNotify){
                                         let username = (user.username) ? `(@ ${user.username})` : '';
-                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`, user.tag);
                                     }
                                 @elseif(Auth::user()->accesslevel->contains('role', 'admin'))
                                     let canNotify = atmptNotification();
                                     if (canNotify && user.is_super_admin == 0){
                                         let username = (user.username) ? `(@ ${user.username})` : '';
-                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`, user.tag);
                                     }
                                 @else
                                     let canNotify = atmptNotification();
                                     if (canNotify && user.is_super_admin == 0 && user.is_admin == 0){
                                         let username = (user.username) ? `(@ ${user.username})` : '';
-                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`);
+                                        showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`, user.tag);
                                     }
                                 @endif
                             })

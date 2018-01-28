@@ -148,6 +148,10 @@
 
     <script type="text/javascript">
         {{-- echo presence --}}
+        /**
+         * loops through all the tr & place green bar
+         * if the user is online acts upon call from the below echo events
+         */
         function refreshOnlineUsers(userList){
             $('table.backend-list tr').each(function(){
                 let userId = parseInt($(this).attr('data-user'));
@@ -160,6 +164,11 @@
             });
         }
 
+        /**
+         * checks continiously who is logged in & 
+         * calls `refreshOnlineUsers` with fresh list of logged in users &
+         *  puts green bar beside the tr
+         */
         let allusers = [];
         Echo.join('all-admins')
             .here((users) => {
@@ -183,6 +192,9 @@
                 }
             });
 
+        /**
+         * account active/inactive toggle
+         */
         function ToggleAccount(id, elem)
         {
             elem.setAttribute('disabled', 'disabled');

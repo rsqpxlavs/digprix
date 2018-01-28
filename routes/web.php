@@ -78,6 +78,8 @@ Route::prefix('admin')->group(function() {
         Route::get('/account', 'AccountPage@Visit')->name('admin.account');
         Route::post('/account/secure', 'AccountPage@SecureAccount')->name('admin.secure.account');
 
+        Route::post('/presence/track-the-tag', 'misc\TrackPushNotificationTag')->name('admin.track.presence.tag');
+
         //manage admin accouts
         Route::group(['middleware' => ['can:manage_admin_accounts']], function () {
 
