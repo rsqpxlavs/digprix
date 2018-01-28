@@ -76,7 +76,7 @@ using *Laravel Echo* with *pusher* <br>
 	- employee/blog author see their level only
 5. `notify-loggedin.js` takes the push notification tag [as the id of the last loggedin history of the user to make the current presence unique] & first tries to check/store with **`sessionStorage`** but if browser doesn't support it then hit ajax to `Controllers/Backend/misc/TrackPushNotificationTag.php` which also does the same job
 	1. check if the current tagged push msg was previously displayed or not
-	2. this is because Laravel Echo on each page refresh changes the websocket of the presence channel & re-joins the current user so the joining event is fired on each page load, that's why to make sure that same push msg doesn't disturb user these process were used
+	2. **this is because Laravel Echo on each page refresh changes the websocket of the presence channel & re-joins the current user so the joining event is fired on each page load, that's why to make sure that same push msg doesn't disturb user these process were used
 
 ## Device Login History Tracking: ##
 `hisorange/browser-detect` is used to detect device data, ip etc.
