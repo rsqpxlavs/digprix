@@ -66,6 +66,18 @@ using *Laravel Echo* with *pusher* <br>
 6. on `FlushSessions` class instance use `secureAccount()` [*pusher broadcast, purge_session timestamp*] to flush all the sessions & use `logoutTheUser()` to logout the user as well [***triggers logout the currently logged in admin so use with caution*]
 7. new middleware written **is.session.active** => `Backend\ForceLogoutAllDevices` which compares the current device login time with the timestamp ( managed by the `remember_token` field of *admins* table ) when logout from all sessions requested
 
+###Presence Channel:
+1. `app/Events/backend/notify/SomeoneJustLoggedIn.php` using to put all backend loggedin users into `all-admins` **presenceChannel**
+2. presence channel doesn't require broadcasting the event to trigger just user presence so not using any queue for this event but if in future required to broadcast anything to this channel then use *`backend-low`* queue
+3. used push notification for web browser & a sticky footer element used with `div#sticky-footer-info` to make some info footer stick [ex. enable notification] 
+4. `backend/js/custom/notify-loggedin.js` is used to notify users about who just logged in 
+	- superadmin can see anything
+	- admin can see there level & lower level
+	- employee/blog author see their level only
+5. `notify-loggedin.js` takes the push notification tag [as the id of the last loggedin history of the user to make the current presence unique] & first tries to check/store with **`sessionStorage`** but if browser doesn't support it then hit ajax to `Controllers/Backend/misc/TrackPushNotificationTag.php` which also does the same job
+	1. check if the current tagged push msg was previously displayed or not
+	2. this is because Laravel Echo on each page refresh changes the websocket of the presence channel & re-joins the current user so the joining event is fired on each page load, that's why to make sure that same push msg doesn't disturb user these process were used
+
 ## Device Login History Tracking: ##
 `hisorange/browser-detect` is used to detect device data, ip etc.
 
