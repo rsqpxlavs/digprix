@@ -71,9 +71,6 @@ class LogSuccessfulLogin
                         $admin->loginhistory()->whereNotIn('id', $last_ten)->delete();
                     }
 
-                    //notify to the backend presence channel about new user logged in
-                    broadcast(new SomeoneJustLoggedIn())->toOthers();
-
                     break;
                 case "App\User":
                     //Log::info('User loggedin Email: ->'. $user->user->email .', ID -> '. $user->user->id);
