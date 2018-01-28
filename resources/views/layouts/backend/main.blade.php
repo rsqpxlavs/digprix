@@ -24,24 +24,15 @@
         {{-- Laravel Echo init --}}
         <script type="text/javascript" src="{{ asset('assets/backend/js/custom/init-broadcasting.js') }}"></script>
         
-        {{-- check for user logout from all device broadcast --}}
-        <script type="text/javascript">
-            document.onreadystatechange = () => {
-                if (document.readyState === 'complete') {
-                    Echo.private('logout-from-all.{{Auth::user()->id}}').listen('.secure.account', function (e) {
-                        // console.log(e);
-                        $("#session-not-available-modal").modal('show');
-                    });
-                }
-            };
-        </script>
 
-        {{-- backend user presence --}}
+        {{-- Echo event listen --}}
         <script type="text/javascript" src="{{ asset('assets/backend/js/custom/notify-loggedin.js') }}"></script>
         <script type="text/javascript">
             (function () {
                 document.onreadystatechange = () => {
                     if (document.readyState === 'complete') {
+
+                        {{-- backend user presence --}}
                         Echo.join('all-admins')
                             .here((users) => {
                                 // console.log(users);
@@ -70,9 +61,24 @@
                             .leaving((user) => {
                                 // console.log(`${user.name} left`);
                             });
+
+                        {{-- check for user logout from all device broadcast --}}
+                        Echo.private('logout-from-all.{{Auth::user()->id}}').listen('.secure.account', function (e) {
+                            // console.log(e);
+                            $("#session-not-available-modal").modal('show');
+                        });
                     }
                 };
             })();
+        </script>
+
+        {{-- check for user logout from all device broadcast --}}
+        <script type="text/javascript">
+            // document.onreadystatechange = () => {
+            //     if (document.readyState === 'complete') {
+                    
+            //     }
+            // };
         </script>
 
     </head>
