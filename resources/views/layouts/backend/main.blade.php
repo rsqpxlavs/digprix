@@ -72,15 +72,6 @@
             })();
         </script>
 
-        {{-- check for user logout from all device broadcast --}}
-        <script type="text/javascript">
-            // document.onreadystatechange = () => {
-            //     if (document.readyState === 'complete') {
-                    
-            //     }
-            // };
-        </script>
-
     </head>
 
     <body>
