@@ -25,7 +25,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // admin_notify('gritter-color info', 'Welcome '. Auth::user()->fname, 'Hi, welcome back to digprix admin');
+        // admin_notify('gritter-color info', 'Welcome '. Auth::guard('admin')->user()->fname, 'Hi, welcome back to digprix admin');
         return view('backend.dashboard');
     }
 

@@ -35,22 +35,22 @@ class ManageAccounts extends Controller
             $role = $request->query('role');
             if($role === 'all')
             {
-                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::user()->id]])->latest()->get();
+                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::guard('admin')->user()->id]])->latest()->get();
             }
             else
             {
-                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::user()->id]])->whereHas('accesslevel', function ($query) use ($role) {
+                $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::guard('admin')->user()->id]])->whereHas('accesslevel', function ($query) use ($role) {
                     $query->where('role', $role);
                 })->latest()->get();
             }
         }
         else
         {
-            $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::user()->id]])->latest()->get();
+            $admins = Admin::with(['accesslevel', 'loginhistory:id,admin_id,created_at'])->where([['super_admin', '!=', '1'], ['id', '!=', Auth::guard('admin')->user()->id]])->latest()->get();
         }
 
         //total no. of admins [except current user & except super admin]
-        if(Auth::user()->super_admin)
+        if(Auth::guard('admin')->user()->super_admin)
             //the current user is superadmin himself so just substract 1 from all
             $total_acc_no = Admin::count() - 1;
         else

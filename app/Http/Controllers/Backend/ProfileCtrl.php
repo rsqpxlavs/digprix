@@ -125,7 +125,7 @@ class ProfileCtrl extends Controller
 
 
             //delete existing database image, the temporary image & database update profile pic
-            $admin = Auth::user();
+            $admin = Auth::guard('admin')->user();
 
             unlink($tmp_uploaded_to . $image);
             if($admin->photo) unlink($destinationPath . $admin->photo);
@@ -163,15 +163,15 @@ class ProfileCtrl extends Controller
 
 
         //check if current password is correct
-        if (Hash::check($request->input('curr_password'), Auth::user()->password)) 
+        if (Hash::check($request->input('curr_password'), Auth::guard('admin')->user()->password)) 
         {
             //change the password
-            $admin = Auth::user();
+            $admin = Auth::guard('admin')->user();
             $admin->password = Hash::make($request->input('password'));
             $admin->save();
 
             //flush all active device sessions
-            $flush = new FlushSessions(Auth::user()->id, Auth::user(), 'admin');
+            $flush = new FlushSessions(Auth::guard('admin')->user()->id, Auth::guard('admin')->user(), 'admin');
             $flush->secureAccount();
             $flush->logoutTheUser();
             
@@ -194,9 +194,9 @@ class ProfileCtrl extends Controller
         $validator = Validator::make($request->all(), [
             'first_name'    => 'required|alpha_num|min:3|max:255',
             'last_name'     => 'nullable|alpha_num|max:255',
-            'email'         => ['required', 'email', Rule::unique('admins')->ignore(Auth::user()->id)],
-            'username'      => ['nullable', 'alpha_num', 'min:6', 'max:10', Rule::unique('admins')->ignore(Auth::user()->id)],
-            'mobile'        => ['nullable', 'regex:/^[^0-6][0-9]{9}$/', Rule::unique('admins')->ignore(Auth::user()->id)],
+            'email'         => ['required', 'email', Rule::unique('admins')->ignore(Auth::guard('admin')->user()->id)],
+            'username'      => ['nullable', 'alpha_num', 'min:6', 'max:10', Rule::unique('admins')->ignore(Auth::guard('admin')->user()->id)],
+            'mobile'        => ['nullable', 'regex:/^[^0-6][0-9]{9}$/', Rule::unique('admins')->ignore(Auth::guard('admin')->user()->id)],
         ]);
 
         if ($validator->fails()) {
@@ -205,7 +205,7 @@ class ProfileCtrl extends Controller
         }
 
         //update profile
-        Auth::user()->update([
+        Auth::guard('admin')->user()->update([
             'fname' => $request->input('first_name'),
             'lname' => $request->input('last_name'),
             'email' => $request->input('email'),

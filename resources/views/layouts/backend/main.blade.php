@@ -38,13 +38,13 @@
                                 // console.log(users);
                             })
                             .joining((user) => {
-                                @if(Auth::user()->super_admin)
+                                @if(Auth::guard('admin')->user()->super_admin)
                                     let canNotify = atmptNotification();
                                     if (canNotify){
                                         let username = (user.username) ? `(@ ${user.username})` : '';
                                         showNotification(`${user.fullname} logged in`, `${user.fname} ${username} is now online`, `${user.photo}`, user.tag);
                                     }
-                                @elseif(Auth::user()->accesslevel->contains('role', 'admin'))
+                                @elseif(Auth::guard('admin')->user()->accesslevel->contains('role', 'admin'))
                                     let canNotify = atmptNotification();
                                     if (canNotify && user.is_super_admin == 0){
                                         let username = (user.username) ? `(@ ${user.username})` : '';
@@ -63,7 +63,7 @@
                             });
 
                         {{-- check for user logout from all device broadcast --}}
-                        Echo.private('logout-from-all.{{Auth::user()->id}}').listen('.secure.account', function (e) {
+                        Echo.private('logout-from-all.{{Auth::guard('admin')->user()->id}}').listen('.secure.account', function (e) {
                             // console.log(e);
                             $("#session-not-available-modal").modal('show');
                         });

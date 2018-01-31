@@ -111,7 +111,7 @@
         <ul class="nav navbar-nav float-lg-right mai-user-nav">
             <li class="dropdown nav-item">
                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle nav-link"> 
-                    <img src="{{ curr_admin_photo() }}"><span class="user-name">{{ Auth::user()->fname }}</span>
+                    <img src="{{ curr_admin_photo() }}"><span class="user-name">{{ Auth::guard('admin')->user()->fname }}</span>
                     <span class="angle-down s7-angle-down"></span>
                 </a>
                 <div role="menu" class="dropdown-menu">

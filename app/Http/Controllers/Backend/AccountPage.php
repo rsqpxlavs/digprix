@@ -18,7 +18,7 @@ class AccountPage extends Controller
             '_hitSecureMyAcc' => route('admin.secure.account')
         ]);
 
-        $admin = Admin::findOrFail(Auth::user()->id);    
+        $admin = Admin::findOrFail(Auth::guard('admin')->user()->id);    
 
         return view('backend.account', ['history' => $admin->loginhistory()->latest()->paginate(5)]);
     }
@@ -34,7 +34,7 @@ class AccountPage extends Controller
 
         if($request->input('secure'))
         {
-            $flush = new FlushSessions(Auth::user()->id, Auth::user(), 'admin');
+            $flush = new FlushSessions(Auth::guard('admin')->user()->id, Auth::guard('admin')->user(), 'admin');
             $flush->secureAccount();
             $flush->logoutTheUser();
 

@@ -25,7 +25,7 @@
 						<div class="user-display-cover"><img src="{{ asset('assets/backend/img/profile-cover/cover.jpg') }}" alt="cover"></div>
 						<div class="user-display-bottom">
 							<div class="user-display-id"><img src="{{ curr_admin_photo() }}" alt="avatar" class="user-display-avatar">
-								<div class="user-display-name">{{ Auth()->user()->fname .' '. Auth()->user()->lname }}</div>
+								<div class="user-display-name">{{ Auth()->guard('admin')->user()->fname .' '. Auth()->guard('admin')->user()->lname }}</div>
 							</div>
 							<div class="user-display-stats">
 								<div class="user-display-stat">
@@ -135,7 +135,7 @@
 								
 								<div class="form-group mt-1 {{ $errors->profile->has('first_name')? 'has-danger' : '' }}">
 									<label>First Name <span class="text-danger">*</span></label>
-									<input type="text" placeholder="Enter first name" name="first_name" value="{{ Auth()->user()->fname }}" class="form-control">
+									<input type="text" placeholder="Enter first name" name="first_name" value="{{ Auth()->guard('admin')->user()->fname }}" class="form-control">
 									
 									@if($errors->profile->has('first_name'))
 									<small class="form-control-feedback text-danger">
@@ -146,7 +146,7 @@
 
 								<div class="form-group mt-1 {{ $errors->profile->has('last_name')? 'has-danger' : '' }}">
 									<label>Last Name</label>
-									<input type="text" placeholder="Enter last name" name="last_name" value="{{ Auth()->user()->lname }}" class="form-control">
+									<input type="text" placeholder="Enter last name" name="last_name" value="{{ Auth()->guard('admin')->user()->lname }}" class="form-control">
 
 									@if($errors->profile->has('last_name'))
 									<small class="form-control-feedback text-danger">
@@ -157,7 +157,7 @@
 
 								<div class="form-group mt-1 {{ $errors->profile->has('email')? 'has-danger' : '' }}">
 									<label>Email ID <span class="text-danger">*</span></label>
-									<input type="email" placeholder="Enter email" name="email" value="{{ Auth()->user()->email }}" class="form-control">
+									<input type="email" placeholder="Enter email" name="email" value="{{ Auth()->guard('admin')->user()->email }}" class="form-control">
 
 									@if($errors->profile->has('email'))
 									<small class="form-control-feedback text-danger">
@@ -168,7 +168,7 @@
 
 								<div class="input-group mb-2 {{ $errors->profile->has('username')? 'has-danger has-feedback' : '' }}">
 									<span class="input-group-addon">@</span>
-									<input type="text" placeholder="Username" name="username" value="{{ Auth()->user()->username }}" class="form-control {{ $errors->profile->has('username')? 'form-control-danger' : '' }}">
+									<input type="text" placeholder="Username" name="username" value="{{ Auth()->guard('admin')->user()->username }}" class="form-control {{ $errors->profile->has('username')? 'form-control-danger' : '' }}">
 								</div>
 								@if($errors->profile->has('username'))
 								<small class="form-control-feedback text-danger">
@@ -178,7 +178,7 @@
 
 								<div class="form-group mt-1 {{ $errors->profile->has('mobile')? 'has-danger' : '' }}">
 									<label>Mobile</label>
-									<input type="text" placeholder="Enter mobile no." name="mobile" value="{{ Auth()->user()->mobile }}" class="form-control">
+									<input type="text" placeholder="Enter mobile no." name="mobile" value="{{ Auth()->guard('admin')->user()->mobile }}" class="form-control">
 								
 									@if($errors->profile->has('mobile'))
 									<small class="form-control-feedback text-danger">

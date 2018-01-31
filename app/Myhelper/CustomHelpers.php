@@ -263,7 +263,7 @@ if(! function_exists('curr_admin_photo'))
     {
         if(Auth()->guard('admin')->check())
         {
-            $photo = Auth()->user()->photo ?? 'blank.png';
+            $photo = Auth()->guard('admin')->user()->photo ?? 'blank.png';
             return asset('assets/backend/img/profile/'.$photo);
         }
     }
