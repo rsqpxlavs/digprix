@@ -15,7 +15,7 @@ check auth status & auth instance with-
 
 - `Auth::guard('admin')->check()` 
 - `Auth::guard('web')->check()`
-- `Auth::user()->column`
+- `Auth::guard(<guardname>)->user()->column`
 - `auth:admin` **middleware** to restrict admins for login
 - `guest:admin` **middleware** to let access to non logged in admin
 - `auth` **middleware** to restrict non logged in customers
@@ -77,6 +77,10 @@ using *Laravel Echo* with *pusher* <br>
 5. `notify-loggedin.js` takes the push notification tag [as the id of the last loggedin history of the user to make the current presence unique] & first tries to check/store with **`sessionStorage`** but if browser doesn't support it then hit ajax to `Controllers/Backend/misc/TrackPushNotificationTag.php` which also does the same job
 	1. check if the current tagged push msg was previously displayed or not
 	2. **this is because Laravel Echo on each page refresh changes the websocket of the presence channel & re-joins the current user so the joining event is fired on each page load, that's why to make sure that same push msg doesn't disturb user these process were used
+
+###Structure:
+- `AuthServiceProvider ` returns the currently logged in user instance which is used by `BroadcastServiceProvider` to authenticate the current user [ **always one type of user session at a time or it might conflict ]
+- to prevent multiple user type session [both admin & user logged in the current browser at the same time] check `get_class($user) === 'App\<user_model>'` in the *channels.php*
 
 ## Device Login History Tracking: ##
 `hisorange/browser-detect` is used to detect device data, ip etc.
