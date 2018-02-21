@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import NProgress from 'nprogress';
-import '../../../../../../public/assets/backend/lib/nprogress/nprogress.css';
+import '../../libs/nprogress/nprogress.css';
 
 document.getElementById('secure-acc').addEventListener('click', function(e){
     e.target.setAttribute('disabled', 'disabled');

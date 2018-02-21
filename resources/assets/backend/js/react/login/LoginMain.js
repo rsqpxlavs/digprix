@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import NProgress from 'nprogress';
-import '../../../../../../public/assets/backend/lib/nprogress/nprogress.css';
+import '../../libs/nprogress/nprogress.css';
 import '../../../../../../public/assets/backend/css/error-tooltip.css';
 
 /**
