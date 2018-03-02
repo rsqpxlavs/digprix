@@ -28,5 +28,6 @@ class LogLockout
     public function handle(Lockout $event)
     {
         Log::info('Lockout detected: URL-> '. $event->request->fullUrl() .' IP-> '. $event->request->ip() .' username->'. $event->request->username .', email-> '. $event->request->email .' password-> '. $event->request->password);
+        Log::emergency('Lockout detected: URL-> '. $event->request->fullUrl() .' IP-> '. $event->request->ip() .' username->'. $event->request->username .', email-> '. $event->request->email .' password-> '. $event->request->password);
     }
 }
